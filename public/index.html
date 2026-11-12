@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>china-auto-tur — автомобили из Китая под ключ</title>
+    <meta
+      name="description"
+      content="Подбор, выкуп и доставка автомобилей из Китая: Zeekr, Maextro, Aito, Nio, BYD, Changan."
+    />
+
+    <!-- Шрифты: Inter для текста, Unbounded для заголовков -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Unbounded:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Стили по порядку: база, компоненты, страницы -->
+    <link rel="stylesheet" href="assets/css/base.css" />
+    <link rel="stylesheet" href="assets/css/components.css" />
+    <link rel="stylesheet" href="assets/css/pages.css" />
+
+    <!-- Скрипт с defer: выполнится после загрузки разметки -->
+    <script src="assets/js/main.js" defer></script>
+  </head>
+
+  <body>
+    <!-- Шапка сайта: верхняя полоса + панель с меню -->
+    <header class="header">
+      <!-- Верхняя полоса: режим работы и телефон -->
+      <div class="topbar">
+        <div class="container topbar__inner">
+          <p>Пн–Вс: 9:00–21:00 (МСК)</p>
+          <a class="topbar__phone" href="tel:+74950000000"
+            >+7 (495) 000-00-00</a
+          >
+        </div>
+      </div>
+
+      <!-- Основная панель шапки -->
+      <div class="container header__inner">
+        <a class="logo" href="index.html">
+          china-<span class="logo__accent">auto</span>-tur
+        </a>
+
+        <!-- Меню сайта -->
+        <nav class="header__nav" id="main-nav" aria-label="Основное меню">
+          <ul>
+            <li><a href="catalog.html">Каталог</a></li>
+            <li><a href="about.html">О компании</a></li>
+            <li><a href="news.html">Новости</a></li>
+            <li><a href="contacts.html">Контакты</a></li>
+          </ul>
+        </nav>
+
+        <!-- Телефон и кнопка заказа: видны с ноутбука -->
+        <div class="header__contacts">
+          <a class="header__phone" href="tel:+74950000000"
+            >+7 (495) 000-00-00</a
+          >
+          <a class="button button--primary" href="order.html">Заказать авто</a>
+        </div>
+
+        <!-- Бургер для телефона и планшета -->
+        <button
+          class="header__burger"
+          id="burger"
+          type="button"
+          aria-label="Открыть меню"
+          aria-controls="main-nav"
+          aria-expanded="false"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Основное содержимое страницы -->
+    <main>
+      <!-- Первый экран -->
+      <section class="hero">
+        <div class="container">
+          <div class="hero__content">
+            <p class="hero__label">Импорт авто из Китая</p>
+
+            <h1>Поможем купить и пригнать автомобиль из Китая</h1>
+
+            <p class="hero__text">
+              Подберём, выкупим, оформим документы и доставим автомобиль под
+              ключ — с прозрачной ценой на каждом этапе.
+            </p>
+
+            <p class="hero__actions">
+              <a class="button button--primary" href="catalog.html"
+                >Подобрать авто</a
+              >
+              <a class="button button--secondary" href="catalog.html"
+                >Смотреть каталог</a
+              >
+            </p>
+
+            <!-- Цифры доверия -->
+            <ul class="hero__stats">
+              <li><b>500+</b><span>авто доставлено</span></li>
+              <li><b>6 лет</b><span>на рынке</span></li>
+              <li><b>30+ дней</b><span>срок доставки</span></li>
+              <li><b>98%</b><span>довольных клиентов</span></li>
+            </ul>
+          </div>
+
+          <!-- Место под фото автомобиля: картинку добавим позже -->
+          <figure class="hero__photo" aria-label="Фото автомобиля"></figure>
+        </div>
+      </section>
+      <!-- Бренды -->
+      <section class="section">
+        <div class="container">
+          <header class="section__head">
+            <p class="eyebrow">Партнёры</p>
+            <h2>Бренды, с которыми мы работаем</h2>
+          </header>
+
+          <ul class="brands">
+            <li class="brands__item">
+              <h3>Zeekr</h3>
+              <p>8 моделей</p>
+            </li>
+            <li class="brands__item">
+              <h3>Maextro</h3>
+              <p>3 модели</p>
+            </li>
+            <li class="brands__item">
+              <h3>Aito</h3>
+              <p>4 модели</p>
+            </li>
+            <li class="brands__item">
+              <h3>Nio</h3>
+              <p>6 моделей</p>
+            </li>
+            <li class="brands__item">
+              <h3>BYD</h3>
+              <p>14 моделей</p>
+            </li>
+            <li class="brands__item">
+              <h3>Changan</h3>
+              <p>9 моделей</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Популярные автомобили -->
+      <section class="section">
+        <div class="container">
+          <header class="section__head">
+            <p class="eyebrow">Каталог</p>
+            <h2>Популярные авто</h2>
+            <a class="section__link" href="catalog.html">Весь каталог →</a>
+          </header>
+
+          <div class="cards-grid">
+            <article class="car-card">
+              <figure class="car-card__photo">
+                <span class="badge badge--fire">Новинка</span>
+              </figure>
+              <div class="car-card__body">
+                <h3>Zeekr 001 FR</h3>
+                <p class="car-card__meta">Электро · Полный привод · 2024</p>
+                <ul class="car-card__specs">
+                  <li><span>Мощность</span><b>1 138 л.с.</b></li>
+                  <li><span>Запас хода</span><b>656 км</b></li>
+                  <li><span>Разгон</span><b>3,8 с</b></li>
+                </ul>
+                <p class="car-card__price">от 7,49 млн ₽</p>
+                <a class="button button--secondary" href="car.html"
+                  >Подробнее</a
+                >
+              </div>
+            </article>
+
+            <article class="car-card">
+              <figure class="car-card__photo">
+                <span class="badge badge--fire">Хит продаж</span>
+              </figure>
+              <div class="car-card__body">
+                <h3>Aito M9</h3>
+                <p class="car-card__meta">Гибрид · Полный привод · 2024</p>
+                <ul class="car-card__specs">
+                  <li><span>Мощность</span><b>536 л.с.</b></li>
+                  <li><span>Запас хода</span><b>1 402 км</b></li>
+                  <li><span>Разгон</span><b>4,8 с</b></li>
+                </ul>
+                <p class="car-card__price">от 9,2 млн ₽</p>
+                <a class="button button--secondary" href="car.html"
+                  >Подробнее</a
+                >
+              </div>
+            </article>
+
+            <article class="car-card">
+              <figure class="car-card__photo">
+                <span class="badge badge--success">В наличии</span>
+              </figure>
+              <div class="car-card__body">
+                <h3>Nio ET7</h3>
+                <p class="car-card__meta">Электро · Полный привод · 2023</p>
+                <ul class="car-card__specs">
+                  <li><span>Мощность</span><b>653 л.с.</b></li>
+                  <li><span>Запас хода</span><b>580 км</b></li>
+                  <li><span>Разгон</span><b>3,8 с</b></li>
+                </ul>
+                <p class="car-card__price">от 5,95 млн ₽</p>
+                <a class="button button--secondary" href="car.html"
+                  >Подробнее</a
+                >
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Этапы работы: нумерованный список, порядок важен -->
+      <section class="section section--alt">
+        <div class="container">
+          <header class="section__head">
+            <p class="eyebrow">Процесс</p>
+            <h2>Как мы работаем</h2>
+          </header>
+
+          <ol class="steps">
+            <li class="steps__item">
+              <b>01</b>
+              <h3>Заявка</h3>
+              <p>
+                Оставляете заявку на сайте или звоните — обсуждаем бюджет и
+                пожелания.
+              </p>
+            </li>
+            <li class="steps__item">
+              <b>02</b>
+              <h3>Подбор</h3>
+              <p>
+                Подбираем варианты на площадках Китая, проверяем историю и
+                состояние авто.
+              </p>
+            </li>
+            <li class="steps__item">
+              <b>03</b>
+              <h3>Договор</h3>
+              <p>
+                Фиксируем цену и сроки в договоре, вносите предоплату — выкупаем
+                авто.
+              </p>
+            </li>
+            <li class="steps__item">
+              <b>04</b>
+              <h3>Доставка</h3>
+              <p>
+                Организуем доставку, таможню и оформление — передаём авто с
+                ключами.
+              </p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- Новости -->
+      <section class="section">
+        <div class="container">
+          <header class="section__head">
+            <p class="eyebrow">Блог</p>
+            <h2>Новости</h2>
+            <a class="section__link" href="news.html">Все новости →</a>
+          </header>
+
+          <div class="cards-grid">
+            <article class="news-card">
+              <figure class="news-card__photo"></figure>
+              <div class="news-card__body">
+                <time datetime="2026-11-05">5 ноября 2026</time>
+                <h3>Новые правила ввоза авто в 2027 году</h3>
+                <a href="news.html">Читать →</a>
+              </div>
+            </article>
+
+            <article class="news-card">
+              <figure class="news-card__photo"></figure>
+              <div class="news-card__body">
+                <time datetime="2026-10-28">28 октября 2026</time>
+                <h3>Zeekr 001 FR: тест и сроки доставки</h3>
+                <a href="news.html">Читать →</a>
+              </div>
+            </article>
+
+            <article class="news-card">
+              <figure class="news-card__photo"></figure>
+              <div class="news-card__body">
+                <time datetime="2026-10-14">14 октября 2026</time>
+                <h3>Как мы проверяем авто перед отправкой</h3>
+                <a href="news.html">Читать →</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- YouTube-канал -->
+      <section class="section section--alt">
+        <div class="container">
+          <div class="youtube__panel">
+            <figure class="youtube__preview">
+              <span class="youtube__play" aria-hidden="true">▶</span>
+              <figcaption>Новый выпуск · 12:40</figcaption>
+            </figure>
+
+            <div class="youtube__content">
+              <p class="eyebrow">YouTube</p>
+              <h2>Наш канал на YouTube</h2>
+              <p class="youtube__channel">
+                Обзоры авто, поездки на заводы и реальные истории клиентов.
+                Новые выпуски выходят каждую неделю.
+              </p>
+              <p class="youtube__channel">
+                china-auto-tur · 48 тыс. подписчиков
+              </p>
+              <a class="button button--primary" href="news.html">Подписаться</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Призыв к действию с формой обратного звонка -->
+      <section class="section">
+        <div class="container">
+          <div class="cta__panel">
+            <div class="cta__content">
+              <p class="eyebrow">Бесплатная консультация</p>
+              <h2>Нужна помощь с выбором?</h2>
+              <p class="cta__text">
+                Оставьте номер — перезвоним за 15 минут и подберём автомобиль
+                под ваш бюджет.
+              </p>
+            </div>
+
+            <form class="cta__form" action="#" method="post">
+              <label class="visually-hidden" for="cta-phone">Телефон</label>
+              <input
+                class="field"
+                id="cta-phone"
+                type="tel"
+                name="phone"
+                placeholder="+7 (___) ___-__-__"
+                required
+              />
+              <button class="button button--primary" type="submit">
+                Перезвоните мне
+              </button>
+              <p class="cta__note">
+                Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности
+              </p>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Футер: три колонки и нижняя строка -->
+    <footer class="footer">
+      <div class="container footer__grid">
+        <div class="footer__about">
+          <p class="logo">china-<span class="logo__accent">auto</span>-tur</p>
+          <p>Подбор, выкуп и доставка автомобилей из Китая под ключ.</p>
+        </div>
+
+        <nav class="footer__nav" aria-label="Меню в футере">
+          <p class="footer__title">Меню</p>
+          <ul>
+            <li><a href="catalog.html">Каталог</a></li>
+            <li><a href="about.html">О компании</a></li>
+            <li><a href="news.html">Новости</a></li>
+            <li><a href="contacts.html">Контакты</a></li>
+          </ul>
+        </nav>
+
+        <div class="footer__contacts">
+          <p class="footer__title">Контакты</p>
+          <address>
+            <a href="tel:+74950000000">+7 (495) 000-00-00</a>
+            <a href="mailto:hello@china-auto-tur.ru">hello@china-auto-tur.ru</a>
+            <p>Москва, Пресненская наб., 12</p>
+          </address>
+        </div>
+      </div>
+
+      <div class="container footer__bottom">
+        <p>© 2026 china-auto-tur. Все права защищены.</p>
+        <p><a href="contacts.html">Политика конфиденциальности</a></p>
+      </div>
+    </footer>
+  </body>
+</html>

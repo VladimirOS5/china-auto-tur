@@ -1,0 +1,277 @@
+/* ==========================================================
+   pages.css — уникальные блоки конкретных страниц.
+   Сейчас: первый экран (hero) главной страницы.
+   ========================================================== */
+
+.hero {
+  padding: 64px 0;
+}
+
+.hero .container {
+  display: grid;
+  gap: 32px;
+}
+
+/* Плашка-надпись над заголовком */
+.hero__label {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background-color: rgba(255, 106, 0, 0.12);
+  color: var(--fire-400);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.hero__text {
+  margin-top: 16px;
+  max-width: 560px;
+  color: var(--text-muted);
+}
+
+.hero__actions {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Цифры доверия: на телефоне 2 колонки */
+.hero__stats {
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.hero__stats b {
+  display: block;
+  font-family: "Unbounded", sans-serif;
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.hero__stats span {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+/* Заглушка под фото автомобиля */
+.hero__photo {
+  min-height: 320px;
+  border-radius: var(--radius-card);
+  background: linear-gradient(135deg, var(--surface-raised), var(--bg-main));
+}
+
+/* Ноутбук и выше: текст слева, фото справа */
+@media (min-width: 1024px) {
+  .hero {
+    padding: 96px 0;
+  }
+
+  .hero .container {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 48px;
+  }
+
+  .hero__stats {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .hero__photo {
+    min-height: 480px;
+  }
+}
+
+/* ==========================================================
+   Продолжение pages.css: бренды, шаги, YouTube, CTA.
+   ========================================================== */
+
+/* ---------- Бренды ---------- */
+
+.brands {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.brands__item {
+  padding: 20px;
+  text-align: center;
+  background-color: var(--surface-panel);
+  border: 1px solid var(--line-border);
+  border-radius: var(--radius-card);
+}
+
+.brands__item p {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+@media (min-width: 768px) {
+  .brands {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .brands {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+/* ---------- Шаги работы ---------- */
+
+.steps {
+  display: grid;
+  gap: 16px;
+}
+
+.steps__item {
+  padding: 20px;
+  background-color: var(--surface-panel);
+  border: 1px solid var(--line-border);
+  border-radius: var(--radius-card);
+}
+
+/* Кружок с номером шага */
+.steps__item b {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 12px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ff8a00, var(--fire-600));
+  color: #0a1128;
+  font-size: 14px;
+}
+
+.steps__item p {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+@media (min-width: 768px) {
+  .steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .steps {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ---------- Блок YouTube ---------- */
+
+.youtube__panel {
+  display: grid;
+  gap: 24px;
+  padding: 24px;
+  background-color: var(--surface-panel);
+  border: 1px solid var(--line-border);
+  border-radius: 24px;
+}
+
+.youtube__preview {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--surface-raised), var(--bg-main));
+}
+
+/* Круг с треугольником воспроизведения */
+.youtube__play {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.12);
+  color: var(--text-primary);
+  font-size: 18px;
+}
+
+.youtube__preview figcaption {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.youtube__content {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+.youtube__channel {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+@media (min-width: 1024px) {
+  .youtube__panel {
+    grid-template-columns: 1.2fr 1fr;
+    align-items: center;
+    padding: 32px;
+  }
+}
+
+/* ---------- Блок CTA с формой звонка ---------- */
+
+.cta__panel {
+  display: grid;
+  gap: 24px;
+  padding: 32px;
+  background: linear-gradient(135deg, var(--surface-panel), var(--bg-section));
+  border: 1px solid var(--line-border);
+  border-radius: 24px;
+}
+
+.cta__content {
+  display: grid;
+  gap: 12px;
+}
+
+.cta__text {
+  max-width: 480px;
+  color: var(--text-muted);
+}
+
+.cta__form {
+  display: grid;
+  gap: 12px;
+}
+
+.cta__note {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+@media (min-width: 1024px) {
+  .cta__panel {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 48px;
+  }
+
+  /* Поле и кнопка в одну строку, примечание под ними */
+  .cta__form {
+    grid-template-columns: 1fr auto;
+  }
+
+  .cta__note {
+    grid-column: 1 / -1;
+  }
+}

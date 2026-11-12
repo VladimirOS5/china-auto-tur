@@ -1,0 +1,164 @@
+/* ==========================================================
+   base.css — фундамент сайта.
+   Здесь: палитра, сброс стилей, типографика, контейнер.
+   Подключается первым на всех страницах.
+   ========================================================== */
+
+/* Палитра проекта: тёмный синий + огненный оранжевый */
+:root {
+  /* Фоны и панели */
+  --bg-main: #0a1128;
+  --bg-section: #0e1630;
+  --surface-panel: #101a38;
+  --surface-raised: #16224a;
+
+  /* Границы */
+  --line-border: #1c2749;
+  --line-hairline: rgba(255, 255, 255, 0.08);
+
+  /* Текст */
+  --text-primary: #f5f7ff;
+  --text-muted: #9aa7c7;
+
+  /* Огненный акцент */
+  --fire-400: #ff8a33;
+  --fire-500: #ff6a00;
+  --fire-600: #ff5a00;
+
+  /* Размеры и радиусы */
+  --header-height: 72px;
+  --radius-button: 12px;
+  --radius-card: 20px;
+
+  /* Скорость анимаций */
+  --transition-fast: 150ms ease;
+}
+
+/* Сброс: одинаковая база во всех браузерах */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body,
+h1,
+h2,
+h3,
+p,
+ul,
+figure {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+/* Текст сайта */
+body {
+  font-family: "Inter", "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background-color: var(--bg-main);
+}
+
+/* Типографика: заголовки по шкале из макета */
+h1,
+h2 {
+  font-family: "Unbounded", sans-serif;
+  font-weight: 600;
+}
+
+h1 {
+  font-size: 32px;
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: 26px;
+  line-height: 1.25;
+}
+
+h3 {
+  font-size: 20px;
+  line-height: 1.3;
+}
+
+/* Контейнер: держит контент по центру с полями.
+   1248px = 1200px контента + 24px поля с каждой стороны. */
+.container {
+  max-width: 1248px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* На телефонах поля уже */
+@media (max-width: 767px) {
+  .container {
+    padding: 0 16px;
+  }
+}
+
+/* Заголовки крупнее с планшета и выше */
+@media (min-width: 768px) {
+  h1 {
+    font-size: 48px;
+  }
+
+  h2 {
+    font-size: 32px;
+  }
+}
+
+@media (min-width: 1280px) {
+  h1 {
+    font-size: 56px;
+  }
+
+  h2 {
+    font-size: 36px;
+  }
+}
+
+/* Нумерованные списки сбрасываем так же, как обычные:
+   номера шагов нарисуем сами */
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+/* Скрывает элемент визуально, но оставляет его скринридерам.
+   Нужно для подписей полей формы */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
