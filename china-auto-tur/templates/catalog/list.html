@@ -1,0 +1,54 @@
+{% extends 'base.html' %} {% block title %}Каталог автомобилей из Китая цены и
+комплектации{% endblock %} {% block meta %}
+<meta
+  name="description"
+  content="Каталог автомобилей из Китая: Zeekr, BYD, Li Auto, Nio. Цены от производителя, доставка под ключ за 30 дней."
+/>
+<meta
+  name="keywords"
+  content="каталог авто из Китая, купить авто из Китая, Zeekr, BYD, Li Auto, Nio"
+/>
+{% endblock %} {% block content %}
+<section class="catalog">
+  <div class="container">
+    <h1 class="catalog__title">Каталог автомобилей из Китая</h1>
+
+    <div class="catalog__layout">
+      <!-- Сайдбар с брендами -->
+      <aside class="catalog__sidebar">
+        <h2 class="sidebar__title">Бренды</h2>
+        <ul class="brand-list">
+          {% for brand in brands %}
+          <li class="brand-list__item">
+            <a href="?brand={{ brand.name_en }}" class="brand-list__link">
+              {{ brand.name_ru }}
+            </a>
+          </li>
+          {% empty %}
+          <li class="brand-list__empty">Бренды не добавлены</li>
+          {% endfor %}
+        </ul>
+      </aside>
+
+      <!-- Сетка машин -->
+      <div class="catalog__grid">
+        {% if cars %} {% for car in cars %}
+        <article class="car-card">
+          <img
+            src="{{ car.photo }}"
+            alt="{{ car.name }}"
+            class="car-card__photo"
+          />
+          <div class="car-card__body">
+            <h3 class="car-card__title">{{ car.name }}</h3>
+            <p class="car-card__price">{{ car.price }} ₽</p>
+          </div>
+        </article>
+        {% endfor %} {% else %}
+        <p class="catalog__empty">Автомобили скоро появятся</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
