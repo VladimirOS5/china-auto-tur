@@ -1,61 +1,77 @@
-# В самом верху, после BASE_DIR
+from pathlib import Path
 import os
+from dotenv import load_dotenv
 
-# Добавляем наши приложения в список установленных
+load_dotenv()
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-china-auto-tur-dev-key')
+DEBUG = True
+ALLOWED_HOSTS = ['*']
+
 INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-    # наши приложения
-    "catalog",
-    "orders",
-    "accounts",
-    "blog",
-    "pages",
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    # Наши 5 приложений:
+    'catalog',
+    'orders',
+    'accounts',
+    'blog',
+    'pages',
 ]
 
-# База данных PostgreSQL
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "china_auto_tur",
-        "USER": "postgres",
-        "PASSWORD": "твой_пароль_от_postgres",  # поставь свой пароль
-        "HOST": "localhost",
-        "PORT": "5432",
-    }
-}
-
-# Язык и часовой пояс
-LANGUAGE_CODE = "ru-ru"
-TIME_ZONE = "Europe/Moscow"
-
-# Статические файлы (CSS, JS, картинки)
-STATIC_URL = "/static/"
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# Медиа-файлы (загрузки пользователей)
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+ROOT_URLCONF = 'config.urls'
 
-# Шаблоны
 TEMPLATES = [
     {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],  # общая папка шаблонов
-        "APP_DIRS": True,
-        "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.debug",
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
             ],
         },
     },
 ]
+
+WSGI_APPLICATION = 'config.wsgi.application'
+
+# Временная база SQLite для 1-й лабы; в 8-й лабе переключим на PostgreSQL
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+LANGUAGE_CODE = 'ru-ru'
+TIME_ZONE = 'Europe/Moscow'
+USE_I18N = True
+USE_TZ = True
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
