@@ -1,54 +1,63 @@
-{% extends 'base.html' %} {% block title %}Каталог автомобилей из Китая цены и
-комплектации{% endblock %} {% block meta %}
-<meta
-  name="description"
-  content="Каталог автомобилей из Китая: Zeekr, BYD, Li Auto, Nio. Цены от производителя, доставка под ключ за 30 дней."
-/>
-<meta
-  name="keywords"
-  content="каталог авто из Китая, купить авто из Китая, Zeekr, BYD, Li Auto, Nio"
-/>
-{% endblock %} {% block content %}
-<section class="catalog">
-  <div class="container">
-    <h1 class="catalog__title">Каталог автомобилей из Китая</h1>
+{% extends 'base.html' %}
 
-    <div class="catalog__layout">
-      <!-- Сайдбар с брендами -->
-      <aside class="catalog__sidebar">
-        <h2 class="sidebar__title">Бренды</h2>
-        <ul class="brand-list">
-          {% for brand in brands %}
-          <li class="brand-list__item">
-            <a href="?brand={{ brand.name_en }}" class="brand-list__link">
-              {{ brand.name_ru }}
-            </a>
-          </li>
-          {% empty %}
-          <li class="brand-list__empty">Бренды не добавлены</li>
-          {% endfor %}
-        </ul>
-      </aside>
+{% block title %}Каталог автомобилей — China Auto Tur{% endblock %}
 
-      <!-- Сетка машин -->
-      <div class="catalog__grid">
-        {% if cars %} {% for car in cars %}
-        <article class="car-card">
-          <img
-            src="{{ car.photo }}"
-            alt="{{ car.name }}"
-            class="car-card__photo"
-          />
-          <div class="car-card__body">
-            <h3 class="car-card__title">{{ car.name }}</h3>
-            <p class="car-card__price">{{ car.price }} ₽</p>
-          </div>
-        </article>
-        {% endfor %} {% else %}
-        <p class="catalog__empty">Автомобили скоро появятся</p>
+{% block content %}
+<section class="container" style="margin: 40px auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <h1>Каталог автомобилей</h1>
+
+        {% if user.is_authenticated and user.is_manager %}
+            <a href="{% url 'car_create' %}" class="btn btn--primary btn--m">+ Добавить автомобиль</a>
         {% endif %}
-      </div>
     </div>
-  </div>
+
+    <!-- Фильтр по маркам -->
+    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 28px;">
+        <a href="{% url 'car_list' %}" class="btn {% if not selected_brand %}btn--primary{% else %}btn--outline{% endif %}">
+            Все марки
+        </a>
+        {% for brand in brands %}
+            <a href="?brand={{ brand.slug }}" class="btn {% if selected_brand == brand.slug %}btn--primary{% else %}btn--outline{% endif %}">
+                {{ brand.name }}
+            </a>
+        {% endfor %}
+    </div>
+
+    <!-- Сетка карточек -->
+    {% if cars %}
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px;">
+            {% for car in cars %}
+                <div style="border: 1px solid #333; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column;">
+                    {% if car.get_image_url %}
+                        <img src="{{ car.image.url }}" alt="{{ car }}" style="width: 100%; height: 200px; object-fit: cover;">
+                    {% else %}
+                        <div style="width: 100%; height: 200px; background: #1f242d; display: flex; align-items: center; justify-content: center; color: #777;">
+                            Нет фото
+                        </div>
+                    {% endif %}
+
+                    <div style="padding: 18px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <h3>{{ car.brand.name }} {{ car.model_name }}</h3>
+                            <p style="color: #aaa; font-size: 14px; margin: 6px 0;">
+                                {{ car.year }} г. • {{ car.horsepower }} л.с. • {{ car.get_drive_type_display }}
+                            </p>
+                            {% if not car.is_available %}
+                                <span style="color: #f87171; font-size: 13px;">Скрыт из публичного каталога</span>
+                            {% endif %}
+                        </div>
+
+                        <div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center;">
+                            <strong style="font-size: 18px;">{{ car.price }} ₽</strong>
+                            <a href="{% url 'car_detail' car.pk %}" class="btn btn--outline">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Автомобилей по выбранным параметрам пока нет.</p>
+    {% endif %}
 </section>
 {% endblock %}
