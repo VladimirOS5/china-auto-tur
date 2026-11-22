@@ -40,7 +40,7 @@
             </ul>
 
             <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
-                <a href="/order/" class="btn btn--primary btn--m">Оставить заявку на авто</a>
+                <a href="{% url 'order_create' %}?car={{ car.pk }}" class="btn btn--primary btn--m">Оставить заявку на авто</a>
 
                 {% if user.is_authenticated and user.is_manager %}
                     <a href="{% url 'car_edit' car.pk %}" class="btn btn--outline">Редактировать</a>

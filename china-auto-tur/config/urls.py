@@ -7,9 +7,9 @@ urlpatterns = [
     path('dj-admin/', admin.site.urls),
     path('', include('pages.urls')),
     path('catalog/', include('catalog.urls')),
-    path('order/', include('orders.urls')),
     path('news/', include('blog.urls')),
     path('accounts/', include('accounts.urls')),
+    path('orders/', include('orders.urls')),  # <-- проверь наличие этой строки
 ]
 
 if settings.DEBUG:

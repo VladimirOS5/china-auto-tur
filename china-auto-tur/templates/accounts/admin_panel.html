@@ -1,22 +1,104 @@
 {% extends 'base.html' %}
 
-{% block content %}
-<section class="container" style="max-width: 960px; margin: 40px auto;">
-    <h1>Панель администратора</h1>
-    <p>Администратор: <strong>{{ user.username }}</strong></p>
+{% block title %}Админ-панель — China Auto Tur{% endblock %}
 
-    <div style="padding: 20px; border: 1px solid #333; border-radius: 8px; margin: 24px 0;">
-        <h3>Управление системой:</h3>
-        <ul>
-            <li><a href="/dj-admin/accounts/user/">Управление пользователями и назначение ролей</a></li>
-            <li><a href="{% url 'cabinet_manager' %}">Перейти в интерфейс менеджера</a></li>
-            <li><a href="/dj-admin/">Полная база данных (Django Admin)</a></li>
-        </ul>
+{% block content %}
+<section class="container" style="margin: 40px auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 28px;">
+        <div>
+            <h1>Панель администратора</h1>
+            <p style="color: #aaa; margin-top: 6px;">Управление пользователями, контентом и сводка по системе</p>
+        </div>
+
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <a href="{% url 'cabinet_manager' %}" class="btn btn--outline">Заявки менеджера</a>
+            <a href="{% url 'car_create' %}" class="btn btn--primary btn--m">+ Авто</a>
+            <a href="{% url 'post_create' %}" class="btn btn--primary btn--m">+ Новость</a>
+            <a href="/dj-admin/" class="btn btn--outline">Django Admin</a>
+        </div>
     </div>
 
-    <form method="post" action="{% url 'logout' %}">
-        {% csrf_token %}
-        <button type="submit" class="btn">Выйти</button>
-    </form>
+    {% if messages %}
+        {% for message in messages %}
+            <div style="padding: 12px 16px; background: rgba(37, 99, 235, 0.2); border: 1px solid #2563eb; border-radius: 8px; margin-bottom: 20px;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Карточки статистики -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 36px;">
+        <div style="padding: 20px; border: 1px solid #333; border-radius: 12px; background: #161a22;">
+            <div style="color: #aaa; font-size: 14px;">Авто в каталоге</div>
+            <div style="font-size: 28px; font-weight: bold; margin-top: 6px;">{{ stats.cars_count }}</div>
+        </div>
+        <div style="padding: 20px; border: 1px solid #333; border-radius: 12px; background: #161a22;">
+            <div style="color: #aaa; font-size: 14px;">Всего заявок</div>
+            <div style="font-size: 28px; font-weight: bold; margin-top: 6px;">{{ stats.orders_count }}</div>
+        </div>
+        <div style="padding: 20px; border: 1px solid #2563eb; border-radius: 12px; background: #161a22;">
+            <div style="color: #93c5fd; font-size: 14px;">Новых заявок</div>
+            <div style="font-size: 28px; font-weight: bold; margin-top: 6px;">{{ stats.new_orders_count }}</div>
+        </div>
+        <div style="padding: 20px; border: 1px solid #333; border-radius: 12px; background: #161a22;">
+            <div style="color: #aaa; font-size: 14px;">Новостей в блоге</div>
+            <div style="font-size: 28px; font-weight: bold; margin-top: 6px;">{{ stats.posts_count }}</div>
+        </div>
+        <div style="padding: 20px; border: 1px solid #333; border-radius: 12px; background: #161a22;">
+            <div style="color: #aaa; font-size: 14px;">Пользователей</div>
+            <div style="font-size: 28px; font-weight: bold; margin-top: 6px;">{{ stats.users_count }}</div>
+        </div>
+    </div>
+
+    <!-- Управление пользователями -->
+    <h2 style="margin-bottom: 16px;">Пользователи и права доступа</h2>
+    <div style="overflow-x: auto; border: 1px solid #333; border-radius: 12px;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+            <thead>
+                <tr style="border-bottom: 1px solid #333; background: #161a22;">
+                    <th style="padding: 14px 16px;">ID</th>
+                    <th style="padding: 14px 16px;">Логин</th>
+                    <th style="padding: 14px 16px;">Имя и телефон</th>
+                    <th style="padding: 14px 16px;">Дата регистрации</th>
+                    <th style="padding: 14px 16px;">Роль</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in users %}
+                    <tr style="border-bottom: 1px solid #262b36;">
+                        <td style="padding: 14px 16px; color: #888;">{{ u.pk }}</td>
+                        <td style="padding: 14px 16px;">
+                            <strong>{{ u.username }}</strong>
+                            {% if u == user %}<span style="color: #60a5fa; font-size: 12px;">(вы)</span>{% endif %}
+                        </td>
+                        <td style="padding: 14px 16px; color: #bbb;">
+                            {{ u.first_name }} {{ u.last_name }}
+                            {% if u.phone %}<div style="font-size: 13px; color: #888;">{{ u.phone }}</div>{% endif %}
+                        </td>
+                        <td style="padding: 14px 16px; color: #888; font-size: 14px;">
+                            {{ u.date_joined|date:"d.m.Y" }}
+                        </td>
+                        <td style="padding: 14px 16px;">
+                            {% if u == user %}
+                                <span style="padding: 5px 12px; border: 1px solid #444; border-radius: 6px; font-size: 13px;">
+                                    {{ u.get_role_display }}
+                                </span>
+                            {% else %}
+                                <form method="post" action="{% url 'user_role_update' u.pk %}" style="display: flex; gap: 8px; align-items: center;">
+                                    {% csrf_token %}
+                                    <select name="role" style="padding: 6px 10px; border-radius: 6px; background: #1f242d; color: #fff; border: 1px solid #444;">
+                                        {% for code, label in role_choices %}
+                                            <option value="{{ code }}" {% if u.role == code %}selected{% endif %}>{{ label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit" class="btn btn--outline" style="padding: 6px 12px; font-size: 13px;">Сохранить</button>
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </section>
-{% endblock %}  
+{% endblock %}

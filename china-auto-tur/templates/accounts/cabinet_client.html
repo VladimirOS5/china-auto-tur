@@ -29,7 +29,30 @@
     </div>
 
     <h3>Мои заявки на подбор авто</h3>
-    <p>У вас пока нет активных заявок. <a href="/catalog/">Перейти в каталог</a></p>
+{% if user.orders.all %}
+    <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;">
+        {% for order in user.orders.all %}
+            <div style="padding: 14px 18px; border: 1px solid #333; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong>Заявка №{{ order.pk }}</strong> —
+                    {% if order.car %}
+                        <a href="{% url 'car_detail' order.car.pk %}">{{ order.car }}</a>
+                    {% else %}
+                        Индивидуальный подбор
+                    {% endif %}
+                    <div style="color: #aaa; font-size: 13px; margin-top: 4px;">
+                        От {{ order.created_at|date:"d.m.Y H:i" }}
+                    </div>
+                </div>
+                <span style="padding: 4px 12px; border: 1px solid #2563eb; border-radius: 999px; font-size: 13px;">
+                    {{ order.get_status_display }}
+                </span>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>У вас пока нет активных заявок. <a href="{% url 'car_list' %}">Перейти в каталог</a></p>
+{% endif %}
 
     <form method="post" action="{% url 'logout' %}" style="margin-top: 24px;">
         {% csrf_token %}

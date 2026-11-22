@@ -1,8 +1,99 @@
 {% extends 'base.html' %}
 
-{% block title %}Главная — China Auto Tur{% endblock %}
+{% block title %}China Auto Tur — Автомобили из Китая под ключ{% endblock %}
 
 {% block content %}
-    <h1>Структура проекта China Auto Tur успешно запущена!</h1>
-    <p>Лабораторная работа №1: базовая архитектура и роутинг работают.</p>
+<!-- Первый экран (Hero) -->
+<section class="container" style="margin: 40px auto 60px; padding: 48px 36px; border: 1px solid #333; border-radius: 16px; background: #161a22;">
+    <h1 style="font-size: 36px; margin-bottom: 16px;">Автомобили из Китая под ключ</h1>
+    <p style="color: #bbb; font-size: 17px; max-width: 640px; line-height: 1.6; margin-bottom: 28px;">
+        Подбор, проверка, выкуп и доставка новых и проверенных автомобилей напрямую из Китая с полным таможенным оформлением.
+    </p>
+    <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+        <a href="{% url 'order_create' %}" class="btn btn--primary btn--m">Оставить заявку на подбор</a>
+        <a href="{% url 'car_list' %}" class="btn btn--outline">Перейти в каталог</a>
+    </div>
+</section>
+
+<!-- Блок автомобилей из БД -->
+<section class="container" style="margin: 0 auto 60px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <h2>Актуальные предложения в каталоге</h2>
+        <a href="{% url 'car_list' %}" style="color: #aaa; text-decoration: none;">Весь каталог →</a>
+    </div>
+
+    {% if cars %}
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 24px;">
+            {% for car in cars %}
+                <div style="border: 1px solid #333; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column;">
+                    {% if car.get_image_url %}
+                        <img src="{{ car.get_image_url }}" alt="{{ car }}" style="width: 100%; height: 190px; object-fit: cover;">
+                    {% else %}
+                        <div style="width: 100%; height: 190px; background: #1f242d; display: flex; align-items: center; justify-content: center; color: #777;">
+                            Нет фото
+                        </div>
+                    {% endif %}
+
+                    <div style="padding: 18px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <h3>{{ car.brand.name }} {{ car.model_name }}</h3>
+                            <p style="color: #aaa; font-size: 14px; margin: 6px 0;">
+                                {{ car.year }} г. • {{ car.engine_volume }} л • {{ car.horsepower }} л.с.
+                            </p>
+                            <p style="font-size: 19px; font-weight: bold; margin-top: 10px;">
+                                {{ car.formatted_price }} ₽
+                            </p>
+                        </div>
+
+                        <div style="margin-top: 16px;">
+                            <a href="{% url 'car_detail' car.pk %}" class="btn btn--outline" style="width: 100%; text-align: center;">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p style="color: #aaa;">Автомобили скоро появятся в каталоге.</p>
+    {% endif %}
+</section>
+
+<!-- Блок свежих новостей из БД -->
+<section class="container" style="margin: 0 auto 60px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <h2>Новости и обзоры</h2>
+        <a href="{% url 'post_list' %}" style="color: #aaa; text-decoration: none;">Все новости →</a>
+    </div>
+
+    {% if posts %}
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px;">
+            {% for post in posts %}
+                <article style="border: 1px solid #333; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column;">
+                    {% if post.image %}
+                        <img src="{{ post.image.url }}" alt="{{ post.title }}" style="width: 100%; height: 190px; object-fit: cover;">
+                    {% else %}
+                        <div style="width: 100%; height: 190px; background: #1f242d; display: flex; align-items: center; justify-content: center; color: #777;">
+                            China Auto Tur
+                        </div>
+                    {% endif %}
+
+                    <div style="padding: 18px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <span style="color: #888; font-size: 13px;">{{ post.created_at|date:"d.m.Y" }}</span>
+                            <h3 style="margin: 6px 0 10px;">{{ post.title }}</h3>
+                            <p style="color: #bbb; font-size: 14px; line-height: 1.5;">
+                                {{ post.excerpt|default:post.content|truncatewords:20 }}
+                            </p>
+                        </div>
+
+                        <div style="margin-top: 16px;">
+                            <a href="{% url 'post_detail' post.pk %}" class="btn btn--outline">Читать далее</a>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p style="color: #aaa;">Свежих публикаций пока нет.</p>
+    {% endif %}
+</section>
 {% endblock %}

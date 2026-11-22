@@ -25,7 +25,7 @@
         </nav>
         <div class="header__actions">
             <a href="tel:+74950000000" class="header__phone">+7 (495) 000-00-00</a>
-            <button class="btn btn--primary btn--m">Заказать авто</button>
+            <a href="{% url 'order_create' %}" class="btn btn--primary btn--m">Заказать авто</a>
 
             {% if user.is_authenticated %}
                 {% if user.is_admin_role %}

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }} — China Auto Tur{% endblock %}
+
+{% block content %}
+<section class="container" style="max-width: 820px; margin: 40px auto;">
+    <a href="{% url 'post_list' %}" style="color: #aaa; text-decoration: none;">← Все новости</a>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div style="padding: 12px 16px; background: rgba(37, 99, 235, 0.2); border: 1px solid #2563eb; border-radius: 8px; margin-top: 16px;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <h1 style="margin: 18px 0 10px;">{{ post.title }}</h1>
+    <p style="color: #888; font-size: 14px; margin-bottom: 24px;">
+        Опубликовано {{ post.created_at|date:"d.m.Y H:i" }}
+    </p>
+
+    {% if post.image %}
+        <img src="{{ post.image.url }}" alt="{{ post.title }}" style="width: 100%; max-height: 440px; object-fit: cover; border-radius: 12px; margin-bottom: 24px;">
+    {% endif %}
+
+    <div style="line-height: 1.75; font-size: 16px;">
+        {{ post.content|linebreaks }}
+    </div>
+
+    {% if user.is_authenticated and user.is_manager %}
+        <div style="margin-top: 32px; padding-top: 20px; border-top: 1px solid #333; display: flex; gap: 12px;">
+            <a href="{% url 'post_edit' post.pk %}" class="btn btn--outline">Редактировать</a>
+            <form method="post" action="{% url 'post_delete' post.pk %}" onsubmit="return confirm('Удалить эту новость?');">
+                {% csrf_token %}
+                <button type="submit" class="btn btn--outline" style="border-color: #ef4444; color: #ef4444;">Удалить</button>
+            </form>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

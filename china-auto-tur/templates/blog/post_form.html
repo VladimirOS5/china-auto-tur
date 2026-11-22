@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} — China Auto Tur{% endblock %}
+
+{% block content %}
+<section class="container" style="max-width: 640px; margin: 40px auto;">
+    <h1>{{ title }}</h1>
+
+    <form method="post" enctype="multipart/form-data" style="margin-top: 20px;">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div style="display: flex; gap: 12px; margin-top: 20px;">
+            <button type="submit" class="btn btn--primary btn--m">Сохранить</button>
+            <a href="{% url 'post_list' %}" class="btn btn--outline">Отмена</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

@@ -14,6 +14,42 @@
         </ul>
     </div>
 
+    <h3>Входящие заявки клиентов</h3>
+{% if orders %}
+    <div style="display: flex; flex-direction: column; gap: 12px; margin: 16px 0 28px;">
+        {% for order in orders %}
+            <div style="padding: 16px; border: 1px solid #333; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;">
+                <div>
+                    <strong>№{{ order.pk }} • {{ order.customer_name }}</strong> ({{ order.phone }})
+                    <div style="margin-top: 4px;">
+                        Авто: {% if order.car %}<a href="{% url 'car_detail' order.car.pk %}">{{ order.car }}</a>{% else %}Индивидуальный подбор{% endif %}
+                    </div>
+                    {% if order.comment %}
+                        <div style="color: #aaa; font-size: 13px; margin-top: 4px;">Комментарий: {{ order.comment }}</div>
+                    {% endif %}
+                </div>
+
+                <form method="post" action="{% url 'order_status_update' order.pk %}" style="display: flex; gap: 8px; align-items: center;">
+                    {% csrf_token %}
+                    <select name="status" style="padding: 6px 10px; border-radius: 6px; background: #1f242d; color: #fff; border: 1px solid #444;">
+                        {% for code, label in order.STATUS_CHOICES %}
+                            <option value="{{ code }}" {% if order.status == code %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn--primary btn--m">Обновить</button>
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p style="margin: 12px 0 24px; color: #aaa;">Заявок пока нет.</p>
+{% endif %}
+
+<div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px;">
+    <a href="{% url 'car_create' %}" class="btn btn--primary btn--m">+ Добавить автомобиль</a>
+    <a href="{% url 'post_create' %}" class="btn btn--primary btn--m">+ Добавить новость</a>
+</div>
+
     <form method="post" action="{% url 'logout' %}">
         {% csrf_token %}
         <button type="submit" class="btn">Выйти</button>

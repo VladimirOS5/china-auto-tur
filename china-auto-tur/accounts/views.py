@@ -4,6 +4,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import UserRegisterForm, UserLoginForm, UserUpdateForm
 from .decorators import manager_required, admin_required
+from orders.models import Order
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import User
+from catalog.models import Car
+from blog.models import Post
+
+
 
 
 def register_view(request):
@@ -66,9 +73,43 @@ def cabinet_client_view(request):
 
 @manager_required
 def cabinet_manager_view(request):
-    return render(request, 'accounts/cabinet_manager.html')
+    orders = Order.objects.select_related('car', 'car__brand', 'client').all()
+    return render(request, 'accounts/cabinet_manager.html', {'orders': orders})
 
 
 @admin_required
 def admin_panel_view(request):
-    return render(request, 'accounts/admin_panel.html')
+    stats = {
+        'cars_count': Car.objects.count(),
+        'orders_count': Order.objects.count(),
+        'new_orders_count': Order.objects.filter(status='new').count(),
+        'posts_count': Post.objects.count(),
+        'users_count': User.objects.count(),
+    }
+    users = User.objects.all().order_by('-date_joined')
+    role_choices = User._meta.get_field('role').choices
+
+    return render(request, 'accounts/admin_panel.html', {
+        'stats': stats,
+        'users': users,
+        'role_choices': role_choices,
+    })
+
+
+@admin_required
+def user_role_update_view(request, pk):
+    target_user = get_object_or_404(User, pk=pk)
+
+    if request.method == 'POST':
+        if target_user == request.user:
+            messages.error(request, 'Нельзя изменить роль самому себе.')
+            return redirect('admin_panel')
+
+        new_role = request.POST.get('role')
+        if new_role in {'client', 'manager', 'admin'}:
+            target_user.role = new_role
+            target_user.is_staff = (new_role == 'admin')
+            target_user.save()
+            messages.success(request, f'Роль пользователя {target_user.username} обновлена.')
+            
+    return redirect('admin_panel')

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Оставить заявку — China Auto Tur{% endblock %}
+
+{% block content %}
+<section class="container" style="max-width: 560px; margin: 40px auto;">
+    <h1>Заявка на подбор или покупку авто</h1>
+    <p style="color: #aaa; margin: 10px 0 24px;">
+        Оставьте контакты — менеджер рассчитает итоговую стоимость под ключ и свяжется с вами.
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div style="display: flex; gap: 12px; margin-top: 20px;">
+            <button type="submit" class="btn btn--primary btn--m">Отправить заявку</button>
+            <a href="{% url 'car_list' %}" class="btn btn--outline">В каталог</a>
+        </div>
+    </form>
+</section>
+{% endblock %}
