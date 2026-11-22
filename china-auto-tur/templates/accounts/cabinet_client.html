@@ -1,22 +1,39 @@
 {% extends 'base.html' %}
 
+{% block title %}Личный кабинет — China Auto Tur{% endblock %}
+
 {% block content %}
 <section class="container" style="max-width: 760px; margin: 40px auto;">
-    <h1>Личный кабинет клиента</h1>
+    <h1>Личный кабинет</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div style="padding: 12px 16px; background: rgba(37, 99, 235, 0.2); border: 1px solid #2563eb; border-radius: 8px; margin-bottom: 20px;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
 
     <div style="padding: 20px; border: 1px solid #333; border-radius: 8px; margin-bottom: 24px;">
         <p><strong>Логин:</strong> {{ user.username }}</p>
-        <p><strong>Статус:</strong> {{ user.get_role_display }}</p>
-        <p><strong>Email:</strong> {{ user.email|default:"Не указан" }}</p>
-        <p><strong>Телефон:</strong> {{ user.phone|default:"Не указан" }}</p>
+        <p><strong>Роль в системе:</strong> {{ user.get_role_display }}</p>
+
+        <hr style="border-color: #333; margin: 16px 0;">
+
+        <h3>Редактировать профиль</h3>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn--primary btn--m">Сохранить изменения</button>
+        </form>
     </div>
 
     <h3>Мои заявки на подбор авто</h3>
-    <p>У вас пока нет активных заявок. <a href="{% url 'home' %}">Перейти на главную</a></p>
+    <p>У вас пока нет активных заявок. <a href="/catalog/">Перейти в каталог</a></p>
 
     <form method="post" action="{% url 'logout' %}" style="margin-top: 24px;">
         {% csrf_token %}
-        <button type="submit" class="btn">Выйти</button>
+        <button type="submit" class="btn btn--outline">Выйти из аккаунта</button>
     </form>
 </section>
 {% endblock %}

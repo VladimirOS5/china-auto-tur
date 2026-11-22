@@ -20,7 +20,17 @@ class UserRegisterForm(UserCreationForm):
         self.fields['password1'].help_text = ''
         self.fields['password2'].help_text = ''  
     
-    
+class UserUpdateForm(forms.ModelForm):
+    email = forms.EmailField(required=True, label='Электронная почта')
+
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email', 'phone')
+        labels = {
+            'first_name': 'Имя',
+            'last_name': 'Фамилия',
+            'phone': 'Телефон',
+        }
 
 
 class UserLoginForm(AuthenticationForm):
