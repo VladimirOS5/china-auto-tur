@@ -1,0 +1,199 @@
+{% extends 'base.html' %} {% load static %} {% block title %}{{
+car.brand.name_en }} {{ car.name }} купить из Китая цена и комплектации{%
+endblock %} {% block meta %} {# description пишем под человека: цена, срок,
+выгода — это работает на сниппет #}
+<meta
+  name="description"
+  content="{{ car.brand.name_ru }} {{ car.name }} {{ car.year }} года из Китая под ключ. Цена в юанях, характеристики и фото. Доставка за 30 дней с гарантией 2 года."
+/>
+<meta
+  name="keywords"
+  content="{{ car.brand.name_en }} {{ car.name }}, купить {{ car.brand.name_en }} из Китая, {{ car.name }} цена, {{ car.name }} под ключ"
+/>
+{% endblock %} {% block content %}
+<section class="car-page">
+  <div class="container">
+    {# крошки: текущая страница без ссылки, правило «ссылок на себя нет» #}
+    <nav class="breadcrumbs" aria-label="Хлебные крошки">
+      <a href="/" class="breadcrumbs__link">Главная</a>
+      <span class="breadcrumbs__separator">/</span>
+      <a href="{% url 'catalog:list' %}" class="breadcrumbs__link">Каталог</a>
+      <span class="breadcrumbs__separator">/</span>
+      <a
+        href="{% url 'catalog:list' %}?brand={{ car.brand_id }}"
+        class="breadcrumbs__link"
+        >{{ car.brand.name_ru }}</a
+      >
+      <span class="breadcrumbs__separator">/</span>
+      <span class="breadcrumbs__current">{{ car.name }}</span>
+    </nav>
+
+    <div class="car-page__layout">
+      {# галерея: пока одно фото, миниатюры добавим когда появятся доп. кадры #}
+      <div class="car-page__gallery">
+        {% if car.photo %}
+        <img
+          src="{% static car.photo %}"
+          alt="{{ car.brand.name_ru }} {{ car.name }} {{ car.year }} фото"
+          class="car-page__photo"
+          width="720"
+          height="450"
+        />
+        {% else %}
+        <div class="car-page__photo car-page__photo--empty">
+          Фото скоро появится
+        </div>
+        {% endif %}
+      </div>
+
+      {# панель покупки: липнет при скролле, чтобы кнопка заказа всегда была
+      рядом #}
+      <aside class="buy-panel">
+        <span class="buy-panel__eyebrow"
+          >{{ car.brand.name_en }} · {{ car.year }}</span
+        >
+        <h1 class="buy-panel__title">{{ car.name }}</h1>
+        <p class="buy-panel__price">{{ car.price_cny|floatformat:0 }} ¥</p>
+
+        {# кнопка ведёт на страницу заказа, её соберём следующим шагом #}
+        <a href="/order/?car={{ car.slug }}" class="btn btn--fire btn--l"
+          >Заказать</a
+        >
+
+        <table class="specs-table">
+          <tr>
+            <td>Двигатель</td>
+            <td>{{ car.get_engine_display }}</td>
+          </tr>
+          <tr>
+            <td>Привод</td>
+            <td>{{ car.get_drive_display }}</td>
+          </tr>
+          <tr>
+            <td>Мощность</td>
+            <td>{{ car.power|default:"—" }}</td>
+          </tr>
+          <tr>
+            <td>Запас хода</td>
+            <td>{{ car.battery|default:"—" }}</td>
+          </tr>
+          <tr>
+            <td>Разгон 0-100</td>
+            <td>{{ car.acceleration|default:"—" }}</td>
+          </tr>
+          <tr>
+            <td>Год выпуска</td>
+            <td>{{ car.year }}</td>
+          </tr>
+        </table>
+      </aside>
+    </div>
+
+    {# табы: кнопки переключают панели, скрипт в main.js #}
+    <div class="car-tabs">
+      <button class="car-tabs__btn car-tabs__btn--active" data-tab="overview">
+        Обзор
+      </button>
+      <button class="car-tabs__btn" data-tab="specs">Характеристики</button>
+      <button class="car-tabs__btn" data-tab="delivery">Доставка</button>
+    </div>
+
+    <div class="car-tabs__panel car-tabs__panel--active" id="tab-overview">
+      <h2 class="section-title">
+        Обзор {{ car.brand.name_ru }} {{ car.name }}
+      </h2>
+      {% if car.description %} {{ car.description|linebreaks }} {% else %}
+      <p class="text-muted">
+        Описание появится позже. Пока смотрите характеристики и фото.
+      </p>
+      {% endif %}
+    </div>
+
+    <div class="car-tabs__panel" id="tab-specs">
+      <h2 class="section-title">Характеристики {{ car.name }}</h2>
+      <table class="specs-table specs-table--full">
+        <tr>
+          <td>Бренд</td>
+          <td>{{ car.brand.name_ru }}</td>
+        </tr>
+        <tr>
+          <td>Модель</td>
+          <td>{{ car.name }}</td>
+        </tr>
+        <tr>
+          <td>Год выпуска</td>
+          <td>{{ car.year }}</td>
+        </tr>
+        <tr>
+          <td>Двигатель</td>
+          <td>{{ car.get_engine_display }}</td>
+        </tr>
+        <tr>
+          <td>Привод</td>
+          <td>{{ car.get_drive_display }}</td>
+        </tr>
+        <tr>
+          <td>Мощность</td>
+          <td>{{ car.power|default:"—" }}</td>
+        </tr>
+        <tr>
+          <td>Запас хода</td>
+          <td>{{ car.battery|default:"—" }}</td>
+        </tr>
+        <tr>
+          <td>Разгон 0-100</td>
+          <td>{{ car.acceleration|default:"—" }}</td>
+        </tr>
+        <tr>
+          <td>Цена в Китае</td>
+          <td>{{ car.price_cny|floatformat:0 }} ¥</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="car-tabs__panel" id="tab-delivery">
+      <h2 class="section-title">Доставка под ключ</h2>
+      <p>
+        Подберём и выкупим автомобиль в Китае, проверим перед отправкой, оформим
+        документы и доставим в ваш город за 30 дней. Цена под ключ известна
+        заранее: таможенные платежи, логистика и комиссия посчитаны до оплаты.
+      </p>
+      <p>
+        Оставьте заявку — менеджер перезвонит в течение 15 минут и пришлёт
+        полный расчёт по этой машине.
+      </p>
+    </div>
+
+    {# перелинковка: похожие машины держат пользователя на сайте #} {% if
+    similar %}
+    <section class="similar">
+      <h2 class="section-title">Похожие автомобили</h2>
+      <div class="similar__grid">
+        {% for s in similar %}
+        <a
+          href="{% url 'catalog:card' s.slug %}"
+          class="car-card car-card--small"
+        >
+          {% if s.photo %}
+          <img
+            src="{% static s.photo %}"
+            alt="{{ s.brand_name }} {{ s.name }}"
+            class="car-card__photo"
+            loading="lazy"
+          />
+          {% endif %}
+          <div class="car-card__body">
+            <span class="car-card__brand">{{ s.brand_name }}</span>
+            <h3 class="car-card__title">{{ s.name }}</h3>
+            <span class="car-card__price"
+              >{{ s.price_cny|floatformat:0 }} ¥</span
+            >
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

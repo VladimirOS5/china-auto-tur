@@ -1,51 +1,197 @@
-{% extends 'base.html' %} {% block title %}Каталог автомобилей из Китая цены и
-комплектации{% endblock %} {% block meta %}
+{% extends 'base.html' %} {% load static %} {% block title %}Каталог автомобилей
+из Китая цены и комплектации{% endblock %} {% block meta %} {# Мета-теги для
+SEO: description влияет на сниппет и поведенческие факторы #}
 <meta
   name="description"
-  content="Каталог автомобилей из Китая: Zeekr, BYD, Li Auto, Nio. Цены от производителя, доставка под ключ за 30 дней."
+  content="Каталог автомобилей из Китая: Zeekr, BYD, Li Auto, Nio. Цены от производителя, доставка под ключ за 30 дней. Более 500 доставленных авто."
 />
 <meta
   name="keywords"
-  content="каталог авто из Китая, купить авто из Китая, Zeekr, BYD, Li Auto, Nio"
+  content="каталог авто из Китая, купить авто из Китая, Zeekr, BYD, Li Auto, Nio, автомобили из Китая цены"
 />
 {% endblock %} {% block content %}
 <section class="catalog">
   <div class="container">
+    {# Хлебные крошки для перелинковки и удобства пользователя #}
+    <nav class="breadcrumbs" aria-label="Хлебные крошки">
+      <a href="/" class="breadcrumbs__link">Главная</a>
+      <span class="breadcrumbs__separator">/</span>
+      <span class="breadcrumbs__current">Каталог</span>
+    </nav>
+
+    {# H1 с ключевой фразой — требование SEO #}
     <h1 class="catalog__title">Каталог автомобилей из Китая</h1>
 
+    {# Счётчик найденных машин #}
+    <p class="catalog__count">
+      {% if cars %} Найдено {{ cars|length }} {{
+      cars|length|pluralize:"автомобиль,автомобиля,автомобилей" }} {% else %}
+      Автомобили не найдены {% endif %}
+    </p>
+
     <div class="catalog__layout">
-      <!-- Сайдбар с брендами -->
+      {# Сайдбар с брендами — фильтр по бренду #}
       <aside class="catalog__sidebar">
         <h2 class="sidebar__title">Бренды</h2>
         <ul class="brand-list">
+          <li class="brand-list__item">
+            {# Ссылка на сброс фильтра (все машины) #}
+            <a
+              href="{% url 'catalog:list' %}"
+              class="brand-list__link {% if not current_brand %}active{% endif %}"
+            >
+              Все бренды
+            </a>
+          </li>
           {% for brand in brands %}
           <li class="brand-list__item">
-            <a href="?brand={{ brand.name_en }}" class="brand-list__link">
+            {# Передаем ID бренда в GET-параметр #}
+            <a
+              href="?brand={{ brand.id }}"
+              class="brand-list__link {% if current_brand == brand.id|stringformat:'i' %}active{% endif %}"
+            >
               {{ brand.name_ru }}
             </a>
           </li>
-          {% empty %}
-          <li class="brand-list__empty">Бренды не добавлены</li>
           {% endfor %}
         </ul>
       </aside>
 
-      <!-- Сетка машин -->
-      <div class="catalog__grid">
-        {% if cars %} {% for car in cars %}
-        <article class="car-card">
-          <img
-            src="{{ car.photo }}"
-            alt="{{ car.name }}"
-            class="car-card__photo"
-          />
-          <div class="car-card__body">
-            <h3 class="car-card__title">{{ car.name }}</h3>
-            <p class="car-card__price">{{ car.price }} ₽</p>
+      {# Основная область с машинами #}
+      <div class="catalog__main">
+        {# Тулбар сортировки #}
+        <div class="catalog__toolbar">
+          <select
+            class="toolbar__select"
+            onchange="window.location.href = '?sort=' + this.value"
+          >
+            <option value="popularity">По популярности</option>
+            <option value="price_asc">Сначала дешевле</option>
+            <option value="price_desc">Сначала дороже</option>
+            <option value="year_desc" selected>Сначала новые</option>
+          </select>
+
+          <div class="toolbar__view">
+            <button
+              class="toolbar__btn toolbar__btn--active"
+              aria-label="Сетка"
+            >
+              <span class="icon">grid</span>
+            </button>
+            <button class="toolbar__btn" aria-label="Список">
+              <span class="icon">list</span>
+            </button>
           </div>
-        </article>
-        {% endfor %} {% else %}
-        <p class="catalog__empty">Автомобили скоро появятся</p>
+        </div>
+
+        {# Сетка машин #}
+        <div class="catalog__grid">
+          {% if cars %} {% for car in cars %} {# SEO ПРАВИЛО: Вся карточка — это
+          ОДНА ссылка. Никаких кнопок "подробнее" внутри, чтобы ссылочный вес не
+          делился #}
+          <a href="{% url 'catalog:card' car.slug %}" class="car-card">
+            {% if car.photo %} {# Путь к фото склеиваем с папкой static #}
+            <img
+              src="{% static car.photo %}"
+              alt="{{ car.brand_name }} {{ car.name }} купить из Китая"
+              class="car-card__photo"
+              loading="lazy"
+              width="384"
+              height="240"
+            />
+            {% else %}
+            <div class="car-card__photo car-card__photo--empty">
+              Фото скоро появится
+            </div>
+            {% endif %}
+
+            <div class="car-card__body">
+              {# Бренд над названием — мелкий,uppercase #}
+              <span class="car-card__brand">{{ car.brand_name }}</span>
+
+              <h3 class="car-card__title">{{ car.name }}</h3>
+
+              {# Мини-таблица характеристик #}
+              <div class="car-card__specs">
+                <div class="spec">
+                  <span class="spec__label">Мощность</span>
+                  <span class="spec__value">{{ car.power|default:"—" }}</span>
+                </div>
+                <div class="spec">
+                  <span class="spec__label">Запас хода</span>
+                  <span class="spec__value">{{ car.battery|default:"—" }}</span>
+                </div>
+                <div class="spec">
+                  <span class="spec__label">Разгон</span>
+                  <span class="spec__value"
+                    >{{ car.acceleration|default:"—" }}</span
+                  >
+                </div>
+              </div>
+
+              {# Подвал карточки: год и цена #}
+              <div class="car-card__footer">
+                <span class="car-card__year">{{ car.year }} год</span>
+                <span class="car-card__price">
+                  {{ car.price_cny|floatformat:0 }} ¥
+                </span>
+              </div>
+            </div>
+          </a>
+          {% endfor %} {% else %} {# Пустое состояние #}
+          <div class="catalog__empty">
+            <span class="icon icon--large">search</span>
+            <h3>По выбранному фильтру автомобили не найдены</h3>
+            <p>Попробуйте сбросить фильтры или выбрать другой бренд</p>
+            <a
+              href="{% url 'catalog:list' %}"
+              class="btn btn--secondary btn--m"
+            >
+              Сбросить фильтры
+            </a>
+          </div>
+          {% endif %}
+        </div>
+
+        {# Пагинация — если машин много #} {% if cars|length > 12 %}
+        <nav class="pagination" aria-label="Навигация по страницам">
+          <a href="?page=1" class="pagination__link pagination__link--active"
+            >1</a
+          >
+          <a href="?page=2" class="pagination__link">2</a>
+          <a href="?page=3" class="pagination__link">3</a>
+          <span class="pagination__dots">...</span>
+          <a href="?page=10" class="pagination__link">10</a>
+          <a href="?page=2" class="pagination__link pagination__link--next">
+            <span class="icon">chevron_right</span>
+          </a>
+        </nav>
+        {% endif %} {# Блок перелинковки "Вы смотрели" — требование SEO для
+        удержания пользователя #} {% if cars %}
+        <section class="recently-viewed">
+          <h2 class="section-title">Вы смотрели</h2>
+          <div class="recently-viewed__grid">
+            {% for car in cars|slice:":3" %}
+            <a
+              href="{% url 'catalog:card' car.slug %}"
+              class="car-card car-card--small"
+            >
+              {% if car.photo %}
+              <img
+                src="{% static car.photo %}"
+                alt="{{ car.brand_name }} {{ car.name }}"
+                class="car-card__photo"
+                loading="lazy"
+              />
+              {% endif %}
+              <div class="car-card__body">
+                <span class="car-card__brand">{{ car.brand_name }}</span>
+                <h3 class="car-card__title">{{ car.name }}</h3>
+              </div>
+            </a>
+            {% endfor %}
+          </div>
+        </section>
         {% endif %}
       </div>
     </div>

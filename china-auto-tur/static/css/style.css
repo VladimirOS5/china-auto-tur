@@ -184,3 +184,391 @@ body {
   text-align: center;
   padding: 60px 0;
 }
+
+/* крошки: мелко, текущая страница без ссылки */
+.breadcrumbs {
+  font-size: 14px;
+  color: #a6a6b0;
+  margin-bottom: 24px;
+}
+.breadcrumbs__link {
+  color: #a6a6b0;
+  text-decoration: none;
+}
+.breadcrumbs__link:hover {
+  color: #4d7cfe;
+}
+.breadcrumbs__separator {
+  margin: 0 8px;
+}
+.breadcrumbs__current {
+  color: #f9fafc;
+}
+
+/* страница машины: галерея слева, панель покупки справа */
+.car-page {
+  padding: 40px 0 96px;
+}
+.car-page__layout {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 40px;
+  align-items: start;
+}
+.car-page__photo {
+  width: 100%;
+  height: 450px;
+  object-fit: cover;
+  border-radius: 20px;
+}
+.car-page__photo--empty {
+  background: #1d1d25;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6e6e78;
+}
+
+/* панель покупки липнет, кнопка заказа всегда на виду */
+.buy-panel {
+  position: sticky;
+  top: 100px;
+  background: #15151b;
+  border: 1px solid #2a2a33;
+  border-radius: 20px;
+  padding: 24px;
+}
+.buy-panel__eyebrow {
+  font-family: "Michroma", sans-serif;
+  font-size: 12px;
+  color: #a6a6b0;
+  letter-spacing: 1px;
+}
+.buy-panel__title {
+  font-family: "Unbounded", sans-serif;
+  font-size: 40px;
+  line-height: 48px;
+  margin: 8px 0 12px;
+}
+.buy-panel__price {
+  font-family: "Unbounded", sans-serif;
+  font-size: 28px;
+  margin-bottom: 16px;
+}
+.btn--fire {
+  background: linear-gradient(135deg, #ff8a33, #ff4d00);
+  color: #0a0a0c;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+}
+.btn--l {
+  height: 52px;
+  line-height: 52px;
+  padding: 0 28px;
+  font-size: 16px;
+}
+.buy-panel .btn--fire {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* таблица характеристик: две колонки, тонкие разделители */
+.specs-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.specs-table td {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 14px;
+}
+.specs-table td:first-child {
+  color: #a6a6b0;
+}
+.specs-table td:last-child {
+  text-align: right;
+  font-family: "JetBrains Mono", monospace;
+}
+.specs-table--full td:last-child {
+  font-family: "Manrope", sans-serif;
+  font-weight: 600;
+}
+
+/* табы: активная кнопка с синей линией снизу */
+.car-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 48px 0 24px;
+  border-bottom: 1px solid #2a2a33;
+}
+.car-tabs__btn {
+  background: none;
+  border: none;
+  color: #a6a6b0;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 12px 16px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+.car-tabs__btn--active {
+  color: #f9fafc;
+  border-bottom-color: #4d7cfe;
+}
+.car-tabs__panel {
+  display: none;
+}
+.car-tabs__panel--active {
+  display: block;
+}
+.car-tabs__panel p {
+  margin-bottom: 12px;
+  color: #a6a6b0;
+}
+.text-muted {
+  color: #6e6e78;
+}
+
+/* похожие: три карточки в ряд */
+.similar {
+  margin-top: 64px;
+}
+.similar__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.car-card--small .car-card__photo {
+  height: 180px;
+}
+
+/* страница заказа: прогресс, две колонки, поля */
+.order-page {
+  padding: 40px 0 96px;
+}
+.order-page__title {
+  font-family: "Unbounded", sans-serif;
+  font-size: 40px;
+  line-height: 48px;
+  margin-bottom: 24px;
+}
+.order-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+.order-progress__step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #6e6e78;
+}
+.order-progress__step span {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #1d1d25;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.order-progress__step--active {
+  color: #f9fafc;
+}
+.order-progress__step--active span {
+  background: #4d7cfe;
+}
+.order-progress__step--done span {
+  background: #22c55e;
+}
+.order-progress__line {
+  flex: 0 0 48px;
+  height: 2px;
+  background: #2a2a33;
+}
+.order-page__layout {
+  display: grid;
+  grid-template-columns: 560px 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+/* сводка слева */
+.order-summary {
+  background: #15151b;
+  border: 1px solid #2a2a33;
+  border-radius: 20px;
+  padding: 24px;
+}
+.order-summary__car {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.order-summary__car img {
+  border-radius: 12px;
+  object-fit: cover;
+}
+.order-summary__car h3 {
+  font-size: 20px;
+}
+.order-summary__price {
+  font-family: "Unbounded", sans-serif;
+  font-size: 20px;
+}
+.order-summary__total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: "Unbounded", sans-serif;
+  font-size: 24px;
+}
+
+/* поля формы */
+.field-label {
+  display: block;
+  font-size: 14px;
+  color: #a6a6b0;
+  margin: 16px 0 8px;
+}
+.field {
+  width: 100%;
+  height: 48px;
+  background: #16161c;
+  border: 1px solid #2a2a33;
+  border-radius: 12px;
+  color: #f9fafc;
+  padding: 0 16px;
+  font-size: 15px;
+  font-family: "Manrope", sans-serif;
+}
+.field:focus {
+  outline: none;
+  border-color: #4d7cfe;
+  box-shadow: 0 0 0 3px rgba(77, 124, 254, 0.2);
+}
+.field--error {
+  border-color: #ef4444;
+}
+.field--textarea {
+  height: 120px;
+  padding: 12px 16px;
+  resize: vertical;
+}
+.error-text {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 6px;
+}
+.checkbox-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 16px 0;
+  font-size: 12px;
+  color: #a6a6b0;
+}
+.checkbox-row input {
+  width: 18px;
+  height: 18px;
+  accent-color: #4d7cfe;
+  flex: 0 0 18px;
+}
+.link {
+  color: #4d7cfe;
+}
+
+/* цветные кружки и строки опций */
+.swatches {
+  display: flex;
+  gap: 12px;
+}
+.swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+.swatch input {
+  display: none;
+}
+.swatch:has(input:checked) {
+  border-color: #4d7cfe;
+}
+.swatch--white {
+  background: #f2f2f2;
+}
+.swatch--black {
+  background: #17181c;
+}
+.swatch--silver {
+  background: #b9bfc7;
+}
+.swatch--blue {
+  background: #2f6bff;
+}
+.swatch--red {
+  background: #d0342c;
+}
+.option-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 14px;
+}
+.option-row input {
+  width: 18px;
+  height: 18px;
+  accent-color: #4d7cfe;
+}
+.option-row__price {
+  margin-left: auto;
+  color: #a6a6b0;
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* страница успеха */
+.success-page {
+  padding: 96px 0;
+  display: flex;
+  justify-content: center;
+}
+.success-page__box {
+  max-width: 420px;
+  text-align: center;
+  background: #15151b;
+  border: 1px solid #2a2a33;
+  border-radius: 24px;
+  padding: 40px;
+}
+.success-page__circle {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #22c55e;
+  color: #0a0a0c;
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+.success-page__title {
+  font-family: "Unbounded", sans-serif;
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+.success-page__text {
+  color: #a6a6b0;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
