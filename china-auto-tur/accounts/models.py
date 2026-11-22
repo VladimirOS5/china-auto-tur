@@ -7,6 +7,7 @@ class User(AbstractUser):
         CLIENT = 'client', 'Клиент'
         MANAGER = 'manager', 'Менеджер'
         ADMIN = 'admin', 'Администратор'
+        
 
     role = models.CharField(
         max_length=20,
@@ -30,3 +31,10 @@ class User(AbstractUser):
 
     def __str__(self):
         return f"{self.username} ({self.get_role_display()})" #type: ignore
+
+    def save(self, *args, **kwargs):
+        if self.is_superuser:
+            self.role = self.Role.ADMIN
+        super().save(*args, **kwargs)
+    
+    
