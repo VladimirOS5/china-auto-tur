@@ -24,10 +24,21 @@
           <a href="/contacts/" class="nav-link">Контакты</a>
         </nav>
         <div class="header__actions">
-          <a href="tel:+74950000000" class="header__phone"
-            >+7 (495) 000-00-00</a
-          >
-          <button class="btn btn--primary btn--m">Заказать авто</button>
+            <a href="tel:+74950000000" class="header__phone">+7 (495) 000-00-00</a>
+            <button class="btn btn--primary btn--m">Заказать авто</button>
+
+            {% if user.is_authenticated %}
+                {% if user.is_admin_role %}
+                    <a href="{% url 'admin_panel' %}" class="nav-link">Админ-панель ({{ user.username }})</a>
+                {% elif user.is_manager %}
+                    <a href="{% url 'cabinet_manager' %}" class="nav-link">Кабинет менеджера ({{ user.username }})</a>
+                {% else %}
+                    <a href="{% url 'cabinet_client' %}" class="nav-link">Кабинет ({{ user.username }})</a>
+                {% endif %}
+            {% else %}
+                <a href="{% url 'login' %}" class="nav-link">Войти</a>
+                <a href="{% url 'register' %}" class="btn btn--m">Регистрация</a>
+            {% endif %}
         </div>
       </div>
     </header>

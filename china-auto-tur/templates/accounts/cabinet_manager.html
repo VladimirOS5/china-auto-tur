@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container" style="max-width: 960px; margin: 40px auto;">
+    <h1>Кабинет менеджера</h1>
+    <p>Вы вошли как: <strong>{{ user.username }}</strong> ({{ user.get_role_display }})</p>
+
+    <div style="padding: 20px; border: 1px solid #333; border-radius: 8px; margin: 24px 0;">
+        <h3>Рабочие разделы менеджера:</h3>
+        <ul>
+            <li>Входящие заявки клиентов (смена статусов от «новой» до «выполнена»)</li>
+            <li>Управление каталогом автомобилей, комплектациями и ценами</li>
+            <li>Публикация новостей компании</li>
+        </ul>
+    </div>
+
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn">Выйти</button>
+    </form>
+</section>
+{% endblock %}

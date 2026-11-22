@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container" style="max-width: 760px; margin: 40px auto;">
+    <h1>Личный кабинет клиента</h1>
+
+    <div style="padding: 20px; border: 1px solid #333; border-radius: 8px; margin-bottom: 24px;">
+        <p><strong>Логин:</strong> {{ user.username }}</p>
+        <p><strong>Статус:</strong> {{ user.get_role_display }}</p>
+        <p><strong>Email:</strong> {{ user.email|default:"Не указан" }}</p>
+        <p><strong>Телефон:</strong> {{ user.phone|default:"Не указан" }}</p>
+    </div>
+
+    <h3>Мои заявки на подбор авто</h3>
+    <p>У вас пока нет активных заявок. <a href="{% url 'home' %}">Перейти на главную</a></p>
+
+    <form method="post" action="{% url 'logout' %}" style="margin-top: 24px;">
+        {% csrf_token %}
+        <button type="submit" class="btn">Выйти</button>
+    </form>
+</section>
+{% endblock %}

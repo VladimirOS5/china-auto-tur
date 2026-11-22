@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container" style="max-width: 960px; margin: 40px auto;">
+    <h1>Панель администратора</h1>
+    <p>Администратор: <strong>{{ user.username }}</strong></p>
+
+    <div style="padding: 20px; border: 1px solid #333; border-radius: 8px; margin: 24px 0;">
+        <h3>Управление системой:</h3>
+        <ul>
+            <li><a href="/dj-admin/accounts/user/">Управление пользователями и назначение ролей</a></li>
+            <li><a href="{% url 'cabinet_manager' %}">Перейти в интерфейс менеджера</a></li>
+            <li><a href="/dj-admin/">Полная база данных (Django Admin)</a></li>
+        </ul>
+    </div>
+
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn">Выйти</button>
+    </form>
+</section>
+{% endblock %}  
