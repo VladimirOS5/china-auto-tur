@@ -18,7 +18,7 @@
             Все марки
         </a>
         {% for brand in brands %}
-            <a href="?brand={{ brand.slug }}" class="btn {% if selected_brand == brand.slug %}btn--primary{% else %}btn--outline{% endif %}">
+            <a href="?brand={{ brand.slug }}" class="btn {% if selected_gitbrand == brand.slug %}btn--primary{% else %}btn--outline{% endif %}">
                 {{ brand.name }}
             </a>
         {% endfor %}
@@ -30,7 +30,7 @@
             {% for car in cars %}
                 <div style="border: 1px solid #333; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column;">
                     {% if car.get_image_url %}
-                        <img src="{{ car.image.url }}" alt="{{ car }}" style="width: 100%; height: 200px; object-fit: cover;">
+                        <img src="{{ car.get_image_url }}" alt="{{ car }}" style="width: 100%; height: 200px; object-fit: cover;">
                     {% else %}
                         <div style="width: 100%; height: 200px; background: #1f242d; display: flex; align-items: center; justify-content: center; color: #777;">
                             Нет фото

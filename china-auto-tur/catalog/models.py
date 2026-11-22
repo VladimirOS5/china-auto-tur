@@ -74,6 +74,10 @@ class Car(models.Model):
     description = models.TextField(blank=True, verbose_name='Описание и комплектация')
     is_available = models.BooleanField(default=True, verbose_name='Доступен к заказу')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата добавления')
+    
+    @property
+    def formatted_price(self):
+        return f'{int(self.price):,}'.replace(',', ' ')
 
     class Meta:
         verbose_name = 'Автомобиль'
@@ -89,3 +93,4 @@ class Car(models.Model):
         if self.image:
             return self.image.url
         return ''
+    

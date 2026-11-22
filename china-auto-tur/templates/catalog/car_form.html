@@ -14,5 +14,15 @@
             <a href="{% url 'car_list' %}" class="btn btn--outline">Отмена</a>
         </div>
     </form>
+    <script>
+    const priceInput = document.getElementById('id_price');
+    if (priceInput) {
+        priceInput.addEventListener('input', function () {
+        const digits = this.value.replace(/\D/g, '');
+        this.value = digits.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+        });
+    }
+    </script>
 </section>
+
 {% endblock %}
