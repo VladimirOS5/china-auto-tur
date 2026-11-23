@@ -1,0 +1,248 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Авто из Китая под
+ключ подбор выкуп и доставка china-auto-tur{% endblock %} {% block meta %} {#
+description пишем под человека: цена, срок, выгода — это работает на сниппет #}
+<meta
+  name="description"
+  content="Подберём и доставим автомобиль из Китая под ключ за 30 дней. Цена известна заранее: таможня, логистика и комиссия. 500+ доставленных авто. Оставьте заявку — перезвоним за 15 минут."
+/>
+<meta
+  name="keywords"
+  content="авто из Китая, купить авто из Китая, автомобиль из Китая под ключ, подбор авто из Китая, каталог авто из Китая"
+/>
+<link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}/" />
+{% endblock %} {% block content %} {# герой: текстура со scrim-градиентом,
+ключевая фраза в H1 в самом верху #}
+<section class="hero">
+  <div class="container hero__inner">
+    <div class="hero__content">
+      <span class="hero__badge">Импорт авто из Китая</span>
+      <h1 class="hero__title">Автомобили из Китая под ключ</h1>
+      <p class="hero__lead">
+        Поможем купить и пригнать автомобиль: подбор, выкуп, таможня и доставка
+        за 30 дней. Цена под ключ известна до оплаты.
+      </p>
+      <div class="hero__actions">
+        <button
+          type="button"
+          class="btn btn--fire btn--l"
+          data-modal-open="request"
+        >
+          Подобрать авто
+        </button>
+        <a href="{% url 'catalog:list' %}" class="btn btn--secondary btn--l"
+          >Смотреть каталог</a
+        >
+      </div>
+      <div class="hero__stats">
+        <div class="stat">
+          <span class="stat__num">500+</span
+          ><span class="stat__label">авто доставлено</span>
+        </div>
+        <div class="stat">
+          <span class="stat__num">6 лет</span
+          ><span class="stat__label">на рынке</span>
+        </div>
+        <div class="stat">
+          <span class="stat__num">30+</span
+          ><span class="stat__label">дней доставка</span>
+        </div>
+        <div class="stat">
+          <span class="stat__num">98%</span
+          ><span class="stat__label">довольных клиентов</span>
+        </div>
+      </div>
+    </div>
+    {% if cars.0.photo %}
+    <img
+      src="{% static cars.0.photo %}"
+      alt="Автомобиль из Китая под ключ"
+      class="hero__photo"
+      width="576"
+      height="480"
+    />
+    {% endif %}
+  </div>
+</section>
+
+{# бренды: вся плитка — одна ссылка на каталог с фильтром по бренду #}
+<section class="brands">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">Бренды, с которыми мы работаем</h2>
+    </div>
+    <div class="brands__grid">
+      {% for brand in brands %}
+      <a
+        href="{% url 'catalog:list' %}?brand={{ brand.id }}"
+        class="brand-tile"
+      >
+        <span class="brand-tile__name">{{ brand.name_en }}</span>
+        <span class="brand-tile__count">{{ brand.cars.count }} моделей</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{# популярные авто: карточка из общего include, одна ссылка на всю карточку #}
+<section class="popular">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">Популярные авто</h2>
+      <a href="{% url 'catalog:list' %}" class="section-head__link"
+        >Каталог автомобилей из Китая →</a
+      >
+    </div>
+    <div class="catalog__grid">
+      {% for car in cars %}{% include 'includes/car_card.html' %}{% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="process" id="process">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">Как мы работаем</h2>
+    </div>
+    <div class="process__grid">
+      <div class="step-card">
+        <span class="step-card__num">01</span>
+        <h3 class="step-card__title">Заявка</h3>
+        <p class="step-card__text">
+          Оставляете заявку или звоните — обсуждаем бюджет и пожелания.
+        </p>
+      </div>
+      <div class="step-card">
+        <span class="step-card__num">02</span>
+        <h3 class="step-card__title">Подбор</h3>
+        <p class="step-card__text">
+          Подбираем варианты на площадках Китая, проверяем историю и состояние.
+        </p>
+      </div>
+      <div class="step-card">
+        <span class="step-card__num">03</span>
+        <h3 class="step-card__title">Договор</h3>
+        <p class="step-card__text">
+          Фиксируем цену и сроки в договоре, вносите предоплату — выкупаем авто.
+        </p>
+      </div>
+      <div class="step-card">
+        <span class="step-card__num">04</span>
+        <h3 class="step-card__title">Доставка</h3>
+        <p class="step-card__text">
+          Логистика, таможня и оформление — передаём авто с ключами.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# новости: карточка целиком одна ссылка, анкор раздела — ключевая фраза #}
+<section class="news">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">Новости</h2>
+      <a href="{% url 'blog:list' %}" class="section-head__link"
+        >Новости об авто из Китая →</a
+      >
+    </div>
+    <div class="news-grid">
+      {% for a in articles %}
+      <a href="{% url 'blog:article' a.slug %}" class="news-card">
+        {% if a.cover %}
+        <img
+          src="{% static a.cover %}"
+          alt="{{ a.title }}"
+          class="news-card__cover"
+          loading="lazy"
+          width="384"
+          height="216"
+        />
+        {% else %}
+        <div class="news-card__cover news-card__cover--fallback">
+          <span class="icon">article</span>
+        </div>
+        {% endif %}
+        <div class="news-card__body">
+          <time class="news-card__date">{{ a.published_at|date:"d.m.Y" }}</time>
+          <h3 class="news-card__title">{{ a.title }}</h3>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{# свой YouTube: ссылка на свой ресурс разрешена и полезна #}
+<section class="youtube">
+  <div class="container">
+    <div class="youtube-panel">
+      <div class="youtube-panel__preview">
+        <span class="youtube-panel__play"
+          ><span class="icon">play_arrow</span></span
+        >
+        <span class="youtube-panel__caption">Новый выпуск · 12:40</span>
+      </div>
+      <div class="youtube-panel__body">
+        <span class="hero__badge">YouTube</span>
+        <h2 class="section-title">Наш канал на YouTube</h2>
+        <p>
+          Обзоры авто, поездки на заводы и реальные истории клиентов. Новые
+          выпуски каждую неделю.
+        </p>
+        <a
+          href="https://youtube.com/@chinaautotur"
+          class="btn btn--primary btn--m"
+          >Подписаться</a
+        >
+      </div>
+    </div>
+  </div>
+</section>
+
+{# CTA: форма обратного звонка, согласие действием со ссылкой на политику #}
+<section class="cta">
+  <div class="container">
+    <div class="cta-panel">
+      <div class="cta-panel__text">
+        <span class="hero__badge">Бесплатная консультация</span>
+        <h2 class="section-title">Нужна помощь с выбором?</h2>
+        <p>
+          Оставьте номер — перезвоним за 15 минут и подберём автомобиль под ваш
+          бюджет.
+        </p>
+      </div>
+      <form
+        method="post"
+        action="{% url 'pages:callback' %}"
+        class="cta-panel__form"
+      >
+        {% csrf_token %} {% if sent %}
+        <p class="banner-sent">
+          Спасибо! Менеджер перезвонит в течение 15 минут.
+        </p>
+        {% endif %} {% if error %}
+        <p class="banner-error">
+          Проверьте номер: нужен формат +7 и десять цифр.
+        </p>
+        {% endif %}
+        <div class="cta-panel__row">
+          <input
+            class="field"
+            name="phone"
+            placeholder="+7 (___) ___-__-__"
+            aria-label="Телефон"
+          />
+          <button class="btn btn--primary btn--m">Перезвоните мне</button>
+        </div>
+        <p class="cta-panel__note">
+          Нажимая кнопку, вы соглашаетесь с
+          <a href="{% url 'pages:policy' %}" class="link"
+            >политикой конфиденциальности</a
+          >.
+        </p>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

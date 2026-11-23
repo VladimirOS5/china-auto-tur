@@ -1,0 +1,100 @@
+{% extends 'base.html' %} {% block title %}Кабинет менеджера china-auto-tur
+очередь заявок{% endblock %} {% block meta %}<meta
+  name="robots"
+  content="noindex, nofollow"
+/>{% endblock %} {% block content %}
+<section class="cabinet">
+  <div class="container">
+    <h1 class="cabinet__title">Очередь заявок</h1>
+
+    {# фильтр-ряд: поиск по имени и статус, оба значения уходят в GET #}
+    <form method="get" class="filter-row">
+      <input
+        class="field field--search"
+        name="q"
+        value="{{ q }}"
+        placeholder="Поиск по имени клиента"
+      />
+      <select class="field field--status" name="status">
+        <option value="">Все статусы</option>
+        {% for value, label in statuses %}
+        <option
+          value="{{ value }}"
+          {%
+          if
+          current_status=""
+          ="value"
+          %}selected{%
+          endif
+          %}
+        >
+          {{ label }}
+        </option>
+        {% endfor %}
+      </select>
+      <button class="btn btn--primary btn--m">Применить</button>
+    </form>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>№</th>
+          <th>Клиент</th>
+          <th>Автомобиль</th>
+          <th>Статус</th>
+          <th>Сумма</th>
+          <th>Дата</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for o in orders %}
+        <tr>
+          <td>{{ o.id }}</td>
+          <td>
+            {{ o.name }}<br /><span class="mono text-muted">{{ o.phone }}</span>
+          </td>
+          <td>{{ o.car.brand.name_ru }} {{ o.car.name }}</td>
+          <td>
+            {# своя мини-форма на каждую строку: сменил статус — сразу сохранил
+            #}
+            <form method="post" class="status-form">
+              {% csrf_token %}
+              <input type="hidden" name="order_id" value="{{ o.id }}" />
+              <select name="status" class="field field--inline">
+                {% for value, label in statuses %}
+                <option
+                  value="{{ value }}"
+                  {%
+                  if
+                  o.status=""
+                  ="value"
+                  %}selected{%
+                  endif
+                  %}
+                >
+                  {{ label }}
+                </option>
+                {% endfor %}
+              </select>
+              <button class="btn btn--icon-small" aria-label="Сохранить статус">
+                <span class="icon">check</span>
+              </button>
+            </form>
+          </td>
+          <td class="mono">{{ o.total_cny|floatformat:0 }} ¥</td>
+          <td>{{ o.created_at|date:"d.m.Y" }}</td>
+          <td>
+            <a class="link" href="{% url 'catalog:card' o.car.slug %}">Авто</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="7" class="text-muted">Заявок по фильтру нет</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

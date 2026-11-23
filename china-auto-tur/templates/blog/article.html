@@ -1,0 +1,80 @@
+{% extends 'base.html' %} {% load static %} {% block title %}{{ article.title
+}}{% endblock %} {% block meta %}
+<meta name="description" content="{{ article.lead|truncatewords:25 }}" />
+<link
+  rel="canonical"
+  href="{{ request.scheme }}://{{ request.get_host }}{% url 'blog:article' article.slug %}"
+/>
+{% endblock %} {% block content %}
+<article class="article">
+  <div class="container container--narrow">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки">
+      <a href="/" class="breadcrumbs__link">Главная</a
+      ><span class="breadcrumbs__separator">/</span>
+      <a href="{% url 'blog:list' %}" class="breadcrumbs__link">Новости</a
+      ><span class="breadcrumbs__separator">/</span>
+      <span class="breadcrumbs__current"
+        >{{ article.title|truncatewords:4 }}</span
+      >
+    </nav>
+
+    <h1 class="article__title">{{ article.title }}</h1>
+    <p class="article__meta">
+      {{ article.published_at|date:"d.m.Y" }} · {{ minutes }} мин чтения
+    </p>
+    <p class="article__lead">{{ article.lead }}</p>
+
+    {% if anchors %}
+    <nav class="toc" aria-label="Оглавление статьи">
+      <span class="toc__title">Оглавление</span>
+      {% for id, text in anchors %}<a href="#{{ id }}" class="toc__link"
+        >{{ text }}</a
+      >{% endfor %}
+    </nav>
+    {% endif %}
+
+    <div class="article__body">{{ article.body|safe }}</div>
+
+    <div class="cta-panel cta-panel--article">
+      <div class="cta-panel__text">
+        <h2 class="section-title">Подберём автомобиль под ваш бюджет</h2>
+        <p>
+          Менеджер перезвонит за 15 минут и пришлёт расчёт под ключ по выбранной
+          машине.
+        </p>
+      </div>
+      <a href="{% url 'pages:contacts' %}" class="btn btn--primary btn--m"
+        >Получить консультацию</a
+      >
+    </div>
+
+    {% if others %}
+    <section class="article__others">
+      <h2 class="section-title">Другие статьи</h2>
+      <div class="news-grid">
+        {% for a in others %}
+        <a href="{% url 'blog:article' a.slug %}" class="news-card">
+          {% if a.cover %}<img
+            src="{% static a.cover %}"
+            alt="{{ a.title }}"
+            class="news-card__cover"
+            loading="lazy"
+          />{% else %}
+          <div class="news-card__cover news-card__cover--fallback">
+            <span class="icon">article</span>
+          </div>
+          {% endif %}
+          <div class="news-card__body">
+            <time class="news-card__date"
+              >{{ a.published_at|date:"d.m.Y" }}</time
+            >
+            <h3 class="news-card__title">{{ a.title }}</h3>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+  </div>
+</article>
+{% endblock %}

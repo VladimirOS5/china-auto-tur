@@ -1,0 +1,215 @@
+{% extends 'base.html' %} {% block title %}Контакты china-auto-tur офисы в
+Москве и Китае{% endblock %} {% block meta %}
+<meta
+  name="description"
+  content="Телефон, почта и офисы China Auto Tur в Москве и Шанхае. Пишите в Telegram или WhatsApp — отвечаем в течение 15 минут в рабочее время."
+/>
+<meta
+  name="keywords"
+  content="контакты china-auto-tur, авто из Китая телефон, офис импорт авто Москва"
+/>
+{% endblock %} {% block content %}
+<section class="contacts-page">
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки">
+      <a href="/" class="breadcrumbs__link">Главная</a
+      ><span class="breadcrumbs__separator">/</span
+      ><span class="breadcrumbs__current">Контакты</span>
+    </nav>
+    <h1 class="cabinet__title">Контакты</h1>
+    <p class="hero__lead">
+      Отвечаем в мессенджерах и по телефону с 9:00 до 21:00 по Москве, без
+      выходных.
+    </p>
+
+    {% if sent %}
+    <p class="banner-sent">
+      Сообщение отправлено. Менеджер ответит в течение 15 минут в рабочее время.
+    </p>
+    {% endif %}
+
+    <div class="contacts-layout">
+      <div class="contacts-left">
+        <div class="contact-row">
+          <span class="contact-row__icon"><span class="icon">call</span></span>
+          <div>
+            <span class="stat__label">Телефон</span
+            ><a href="tel:+74950000000" class="contact-row__value"
+              >+7 (495) 000-00-00</a
+            >
+          </div>
+        </div>
+        <div class="contact-row">
+          <span class="contact-row__icon"><span class="icon">mail</span></span>
+          <div>
+            <span class="stat__label">Почта</span
+            ><a href="mailto:hello@china-auto-tur.ru" class="contact-row__value"
+              >hello@china-auto-tur.ru</a
+            >
+          </div>
+        </div>
+        <div class="contact-row">
+          <span class="contact-row__icon"
+            ><span class="icon">schedule</span></span
+          >
+          <div>
+            <span class="stat__label">Режим работы</span
+            ><span class="contact-row__value">Пн–Вс: 9:00–21:00 (МСК)</span>
+          </div>
+        </div>
+        <div class="messengers">
+          <a href="https://t.me/chinaautotur" class="btn btn--secondary btn--m"
+            ><span class="icon">send</span> Telegram</a
+          >
+          <a href="https://wa.me/74950000000" class="btn btn--secondary btn--m"
+            ><span class="icon">chat</span> WhatsApp</a
+          >
+          <a
+            href="https://vk.com/chinaautotur"
+            class="btn btn--secondary btn--m"
+            ><span class="icon">forum</span> VK</a
+          >
+        </div>
+      </div>
+
+      <form method="post" class="contacts-form">
+        {% csrf_token %}
+        <label class="field-label">Имя</label>
+        <input
+          class="field {% if errors.name %}field--error{% endif %}"
+          name="name"
+          value="{{ form.name }}"
+        />
+        {% if errors.name %}
+        <p class="error-text">{{ errors.name }}</p>
+        {% endif %}
+        <label class="field-label">Телефон</label>
+        <input
+          class="field {% if errors.phone %}field--error{% endif %}"
+          name="phone"
+          value="{{ form.phone }}"
+          placeholder="+7 (___) ___-__-__"
+        />
+        {% if errors.phone %}
+        <p class="error-text">{{ errors.phone }}</p>
+        {% endif %}
+        <label class="field-label">Email</label>
+        <input
+          class="field"
+          name="email"
+          type="email"
+          value="{{ form.email }}"
+        />
+        <label class="field-label">Сообщение</label>
+        <textarea
+          class="field field--textarea {% if errors.message %}field--error{% endif %}"
+          name="message"
+        >
+{{ form.message }}</textarea
+        >
+        {% if errors.message %}
+        <p class="error-text">{{ errors.message }}</p>
+        {% endif %}
+        <label class="checkbox-row"
+          ><input
+            type="checkbox"
+            name="consent"
+            {%
+            if
+            form.consent
+            %}checked{%
+            endif
+            %}
+          /><span
+            >Согласен на обработку персональных данных,
+            <a href="{% url 'pages:policy' %}" class="link"
+              >политика конфиденциальности</a
+            ></span
+          ></label
+        >
+        {% if errors.consent %}
+        <p class="error-text">{{ errors.consent }}</p>
+        {% endif %}
+        <button class="btn btn--primary btn--m">Отправить</button>
+      </form>
+    </div>
+
+    <div class="map-panel">
+      <svg
+        viewBox="0 0 1200 360"
+        class="map-panel__svg"
+        role="img"
+        aria-label="Схема маршрута доставки из Шанхая в Москву"
+      >
+        <defs>
+          <linearGradient id="route" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#ff8a33" />
+            <stop offset="1" stop-color="#4d7cfe" />
+          </linearGradient>
+        </defs>
+        <g stroke="#2a2a33" stroke-width="1">
+          <path
+            d="M0 90 H1200 M0 180 H1200 M0 270 H1200 M200 0 V360 M400 0 V360 M600 0 V360 M800 0 V360 M1000 0 V360"
+          />
+        </g>
+        <path
+          d="M980 250 C 800 120, 500 120, 240 150"
+          fill="none"
+          stroke="url(#route)"
+          stroke-width="3"
+          stroke-dasharray="10 8"
+        />
+        <circle cx="980" cy="250" r="10" fill="#ff6a00" />
+        <circle cx="240" cy="150" r="10" fill="#4d7cfe" />
+        <text
+          x="980"
+          y="290"
+          fill="#f9fafc"
+          font-size="20"
+          text-anchor="middle"
+          font-family="Michroma"
+        >
+          SHANGHAI
+        </text>
+        <text
+          x="240"
+          y="110"
+          fill="#f9fafc"
+          font-size="20"
+          text-anchor="middle"
+          font-family="Michroma"
+        >
+          MOSCOW
+        </text>
+        <text
+          x="600"
+          y="200"
+          fill="#a6a6b0"
+          font-size="14"
+          text-anchor="middle"
+          font-family="Manrope"
+        >
+          маршрут доставки · 30+ дней
+        </text>
+      </svg>
+    </div>
+
+    <div class="branches">
+      <div class="branch-card">
+        <h3>Москва</h3>
+        <p>Пресненская наб., 12, офис 45</p>
+        <a href="tel:+74950000000" class="contact-row__value"
+          >+7 (495) 000-00-00</a
+        >
+      </div>
+      <div class="branch-card">
+        <h3>Шанхай</h3>
+        <p>Pudong, Century Avenue 100, офис 8</p>
+        <a href="tel:+862100000000" class="contact-row__value"
+          >+86 (21) 0000-00-00</a
+        >
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

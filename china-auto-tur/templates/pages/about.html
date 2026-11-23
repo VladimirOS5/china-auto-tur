@@ -1,0 +1,159 @@
+{% extends 'base.html' %} {% load static %} {% block title %}О компании
+china-auto-tur импорт автомобилей из Китая{% endblock %} {% block meta %}
+<meta
+  name="description"
+  content="6 лет на рынке импорта авто, 500+ доставленных машин, свои байеры в Китае. Как мы подбираем, проверяем и доставляем автомобили из Китая под ключ."
+/>
+<meta
+  name="keywords"
+  content="о компании china-auto-tur, импорт авто из Китая, доставка авто из Китая компания"
+/>
+{% endblock %} {% block content %}
+<section class="about-hero">
+  <div class="container hero__inner">
+    <div class="hero__content">
+      <span class="hero__badge">О компании</span>
+      <h1 class="hero__title">О компании China Auto Tur</h1>
+      <p class="hero__lead">
+        Мы возим автомобили из Китая с 2019 года: свой офис в Москве, свои
+        байеры в Китае и прозрачный расчёт под ключ до подписания договора.
+      </p>
+    </div>
+    {% if hero_car.photo %}
+    <img
+      src="{% static hero_car.photo %}"
+      alt="Автомобиль из Китая под ключ"
+      class="hero__photo"
+      width="640"
+      height="420"
+    />
+    {% endif %}
+  </div>
+</section>
+
+<section class="stats">
+  <div class="container stats-grid">
+    <div class="stat-tile">
+      <span class="stat__num">500+</span
+      ><span class="stat__label">автомобилей доставлено клиентам</span>
+    </div>
+    <div class="stat-tile">
+      <span class="stat__num">6 лет</span
+      ><span class="stat__label">непрерывной работы на рынке</span>
+    </div>
+    <div class="stat-tile">
+      <span class="stat__num">2</span
+      ><span class="stat__label">офиса: Москва и Шанхай</span>
+    </div>
+    <div class="stat-tile">
+      <span class="stat__num">2 года</span
+      ><span class="stat__label">гарантия на каждый автомобиль</span>
+    </div>
+  </div>
+</section>
+
+<section class="timeline-section">
+  <div class="container">
+    <h2 class="section-title">Как мы росли</h2>
+    <div class="timeline">
+      <div class="timeline__item">
+        <span class="timeline__year">2019</span>
+        <p>
+          Первые десять deliveries из Китая через партнёрские площадки и ручной
+          осмотр.
+        </p>
+      </div>
+      <div class="timeline__item">
+        <span class="timeline__year">2021</span>
+        <p>
+          Открыли свой офис в Шанхае и наняли штатных байеров: осмотры и отчёты
+          стали своими.
+        </p>
+      </div>
+      <div class="timeline__item">
+        <span class="timeline__year">2024</span>
+        <p>
+          Пятисотая доставка и запуск прозрачного калькулятора цены под ключ на
+          сайте.
+        </p>
+      </div>
+      <div class="timeline__item">
+        <span class="timeline__year">2026</span>
+        <p>
+          Гарантия 2 года на каждый автомобиль и личный кабинет со статусами
+          заявки онлайн.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="adv">
+  <div class="container">
+    <h2 class="section-title">Почему нам доверяют</h2>
+    <div class="adv-grid">
+      <div class="adv-card">
+        <span class="adv-card__icon"><span class="icon">verified</span></span>
+        <h3>Проверка до выкупа</h3>
+        <p>
+          Байер осматривает машину, снимает видеоотчёт и проверяет документы до
+          оплаты.
+        </p>
+      </div>
+      <div class="adv-card">
+        <span class="adv-card__icon"><span class="icon">calculate</span></span>
+        <h3>Цена под ключ заранее</h3>
+        <p>
+          Таможня, логистика и комиссия посчитаны до договора: сюрпризов после
+          оплаты нет.
+        </p>
+      </div>
+      <div class="adv-card">
+        <span class="adv-card__icon"
+          ><span class="icon">local_shipping</span></span
+        >
+        <h3>Сроки в договоре</h3>
+        <p>
+          30+ дней фиксируются письменно, статус заявки виден в личном кабинете.
+        </p>
+      </div>
+      <div class="adv-card">
+        <span class="adv-card__icon"><span class="icon">shield</span></span>
+        <h3>Гарантия 2 года</h3>
+        <p>
+          Отвечаем за автомобиль после выдачи: сервисные партнёры в Москве и
+          Краснодаре.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="team">
+  <div class="container">
+    <h2 class="section-title">Команда</h2>
+    <div class="team-grid">
+      <div class="team-card">
+        <span class="team-card__avatar">ВТ</span>
+        <h3>Владимир Ткаченко</h3>
+        <p>Основатель, договоры и цены</p>
+      </div>
+      <div class="team-card">
+        <span class="team-card__avatar">ЛЧ</span>
+        <h3>Ли Чэн</h3>
+        <p>Руководитель офиса в Шанхае</p>
+      </div>
+      <div class="team-card">
+        <span class="team-card__avatar">АС</span>
+        <h3>Анна Соколова</h3>
+        <p>Менеджер по работе с клиентами</p>
+      </div>
+      <div class="team-card">
+        <span class="team-card__avatar">ДК</span>
+        <h3>Дмитрий Ким</h3>
+        <p>Логистика и таможенное оформление</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

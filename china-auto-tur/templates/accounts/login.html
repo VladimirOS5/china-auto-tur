@@ -1,0 +1,64 @@
+{% load static %}
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {# служебная страница: в поиск её не отдаём #}
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Вход в личный кабинет china-auto-tur</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body class="page--login">
+    <div class="login-box">
+      <a href="/" class="login-box__logo">CHINA-AUTO-TUR</a>
+      <h1 class="login-box__title">Вход в личный кабинет</h1>
+
+      <form method="post">
+        {% csrf_token %}
+        <label class="field-label">Логин</label>
+        <input
+          class="field"
+          name="username"
+          value="{{ request.POST.username }}"
+          autocomplete="username"
+        />
+
+        <label class="field-label">Пароль</label>
+        <div class="password-row">
+          <input
+            class="field"
+            type="password"
+            name="password"
+            id="password"
+            autocomplete="current-password"
+          />
+          <button
+            type="button"
+            class="btn btn--icon"
+            id="toggle-password"
+            aria-label="Показать пароль"
+          >
+            <span class="icon">visibility</span>
+          </button>
+        </div>
+
+        <label class="checkbox-row">
+          <input type="checkbox" name="remember" checked />
+          <span>Запомнить меня</span>
+        </label>
+
+        {% if error %}
+        <p class="error-text">{{ error }}</p>
+        {% endif %}
+
+        <button class="btn btn--primary btn--l login-box__submit">Войти</button>
+        <p class="login-box__note">
+          Кабинет создаёт менеджер после первой заявки и присылает логин вместе
+          с расчётом.
+        </p>
+      </form>
+    </div>
+    <script src="{% static 'js/main.js' %}"></script>
+  </body>
+</html>

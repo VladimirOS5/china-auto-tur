@@ -1,5 +1,6 @@
 """Модели заявок: клиент оставляет заявку на конкретную машину."""
 
+from django.conf import settings
 from django.db import models
 
 from catalog.models import Car, Trim, Option
@@ -37,7 +38,10 @@ class Order(models.Model):
 
     # PROTECT: машину с заявками удалить нельзя, история заказов важнее
     car = models.ForeignKey(
-        Car, on_delete=models.PROTECT, related_name="orders", verbose_name="Автомобиль"
+        Car,
+        on_delete=models.PROTECT,
+        related_name="orders",
+        verbose_name="Автомобиль",
     )
     trim = models.ForeignKey(
         Trim,
@@ -49,6 +53,16 @@ class Order(models.Model):
     options = models.ManyToManyField(Option, blank=True, verbose_name="Опции")
     color = models.CharField(
         "Цвет", max_length=20, choices=COLOR_CHOICES, default="white"
+    )
+
+    # заявка может прийти и от гостя: тогда user пустой, а контакты лежат в name/phone
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="orders",
+        verbose_name="Клиент",
     )
 
     name = models.CharField("Имя", max_length=100)
