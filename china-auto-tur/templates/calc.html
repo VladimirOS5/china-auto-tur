@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Калькулятор стоимости авто из Китая расчёт цены под ключ{% endblock %}
+{% block content %}
+<section class="sec"><div class="wrap">
+  <nav class="crumbs"><a href="/">Главная</a> / <span>Расчёт под ключ</span></nav>
+  <h1>Расчёт стоимости под ключ</h1>
+  <p class="lead">Меняйте поля — расчёт обновляется сразу. Курс 1 ¥ = {{ cur.rate }} ₽.</p>
+  <div class="carlayout">
+    <form class="buy" id="cf" onsubmit="return false">
+      <label>Машина из каталога</label>
+      <select id="pick"><option value="">Свой вариант</option>{% for c in cars %}<option data-price="{{ c.price_cny }}" data-power="{{ c.power }}" data-engine="{{ c.engine }}">{{ c.brand.name }} {{ c.name }}</option>{% endfor %}</select>
+      <label>Цена, ¥</label><input type="number" name="price" id="price" value="{{ p.price|floatformat:0 }}">
+      <label>Мощность, л.с.</label><input type="number" name="power" id="power" value="{{ p.power }}">
+      <label>Двигатель</label><select name="engine" id="engine"><option value="electric" {% if p.engine == "electric" %}selected{% endif %}>Электро</option><option value="hybrid" {% if p.engine == "hybrid" %}selected{% endif %}>Гибрид</option><option value="petrol" {% if p.engine == "petrol" %}selected{% endif %}>Бензин</option></select>
+      <label>Возраст</label><select name="age"><option value="new" {% if p.age == "new" %}selected{% endif %}>До 3 лет</option><option value="used3_5" {% if p.age == "used3_5" %}selected{% endif %}>3–5 лет</option><option value="used5" {% if p.age == "used5" %}selected{% endif %}>Старше 5</option></select>
+      <label>Первый взнос <b id="dl">{{ p.down|floatformat:0 }}%</b></label><input type="range" name="down" min="0" max="60" step="5" value="{{ p.down|floatformat:0 }}">
+      <label>Срок <b id="ml">{{ p.months }} мес</b></label><input type="range" name="months" min="6" max="84" step="6" value="{{ p.months }}">
+      <label>Ставка <b id="al">{{ p.annual|floatformat:1 }}%</b></label><input type="range" name="annual" min="5" max="25" step="0.5" value="{{ p.annual|floatformat:1 }}">
+      <div class="fees">{% for f in fees %}<div><span>{{ f.name }}</span><b>{{ f.amount|floatformat:0 }} ₽</b></div>{% endfor %}</div>
+    </form>
+    <div class="form">
+      <div class="total big"><span>Цена под ключ</span><b id="r_total">{% if r %}{{ r.total|floatformat:0 }} ₽{% else %}—{% endif %}</b></div>
+      <table class="kv">
+        <tr><td>Цена в Китае, ₽</td><td id="r_price">{% if r %}{{ r.price|floatformat:0 }}{% endif %}</td></tr>
+        <tr><td>Пошлина</td><td id="r_duty">{% if r %}{{ r.duty|floatformat:0 }}{% endif %}</td></tr>
+        <tr><td>Акциз</td><td id="r_excise">{% if r %}{{ r.excise|floatformat:0 }}{% endif %}</td></tr>
+        <tr><td>НДС</td><td id="r_vat">{% if r %}{{ r.vat|floatformat:0 }}{% endif %}</td></tr>
+        <tr><td>Утильсбор</td><td id="r_util">{% if r %}{{ r.util|floatformat:0 }}{% endif %}</td></tr>
+        <tr><td>Логистика и комиссия</td><td id="r_extra">{% if r %}{{ r.extra|floatformat:0 }}{% endif %}</td></tr>
+      </table>
+      <div class="tiles">
+        <div><span>Платёж в месяц</span><b id="c_pay">{% if c %}{{ c.pay|floatformat:0 }} ₽{% endif %}</b></div>
+        <div><span>Первый взнос</span><b id="c_down">{% if c %}{{ c.down|floatformat:0 }} ₽{% endif %}</b></div>
+        <div><span>Переплата</span><b id="c_over" class="warn">{% if c %}{{ c.over|floatformat:0 }} ₽{% endif %}</b></div>
+      </div>
+      <button class="btn ghost" id="stoggle" type="button">Показать график платежей</button>
+      <table class="kv sched" id="sched" hidden><thead><tr><th>Мес</th><th>Платёж</th><th>Проценты</th><th>Тело</th><th>Остаток</th></tr></thead><tbody id="sbody"></tbody></table>
+    </div>
+  </div>
+</div></section>
+{% endblock %}

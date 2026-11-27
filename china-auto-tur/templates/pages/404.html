@@ -1,0 +1,27 @@
+{% load static %}
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Страница не найдена china-auto-tur</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body class="page--404">
+    <div class="err-box">
+      <span class="err-code">404</span>
+      <h1 class="err-title">Страница не найдена</h1>
+      <p class="err-text">
+        Возможно, адрес устарел или машину уже выкупили. Вернитесь на главную
+        или посмотрите каталог — там есть что выбрать.
+      </p>
+      <div class="err-actions">
+        <a href="/" class="btn btn--primary btn--m">На главную</a>
+        <a href="/catalog/" class="btn btn--secondary btn--m btn--dark-border"
+          >В каталог</a
+        >
+      </div>
+    </div>
+  </body>
+</html>

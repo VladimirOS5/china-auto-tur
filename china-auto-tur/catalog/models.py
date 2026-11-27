@@ -1,96 +1,59 @@
 from django.db import models
-from django.db import models
-from django.templatetags.static import static
+from django.utils.text import slugify
 
 
 class Brand(models.Model):
-    name = models.CharField(max_length=100, unique=True, verbose_name='Марка')
-    slug = models.SlugField(max_length=100, unique=True, verbose_name='URL-метка')
+    name = models.CharField("Бренд", max_length=100, unique=True)
 
     class Meta:
-        verbose_name = 'Марка'
-        verbose_name_plural = 'Марки'
-        ordering = ['name']
+        verbose_name = "Бренд"
+        verbose_name_plural = "Бренды"
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
 
 
 class Car(models.Model):
-    TRANSMISSION_CHOICES = (
-        ('automatic', 'Автомат (АКПП)'),
-        ('robot', 'Робот (DCT)'),
-        ('cvt', 'Вариатор (CVT)'),
-        ('electric', 'Редуктор (Электро)'),
-    )
-
-    DRIVE_CHOICES = (
-        ('fwd', 'Передний'),
-        ('rwd', 'Задний'),
-        ('awd', 'Полный (4WD)'),
-    )
-    
-    static_image = models.CharField(
-        max_length=255,
-        blank=True,
-        verbose_name='Фото из каталога (static/img/cars)'
-    )
-
-    brand = models.ForeignKey(
-        Brand,
-        on_delete=models.CASCADE,
-        related_name='cars',
-        verbose_name='Марка'
-    )
-    model_name = models.CharField(max_length=150, verbose_name='Модель')
-    year = models.PositiveIntegerField(verbose_name='Год выпуска')
-    price = models.DecimalField(max_digits=12, decimal_places=0, verbose_name='Цена (₽)')
-    engine_volume = models.DecimalField(
-        max_digits=3,
-        decimal_places=1,
-        blank=True,
-        null=True,
-        verbose_name='Объём двигателя (л)'
-    )
-    horsepower = models.PositiveIntegerField(verbose_name='Мощность (л.с.)')
-    transmission = models.CharField(
-        max_length=20,
-        choices=TRANSMISSION_CHOICES,
-        default='automatic',
-        verbose_name='Коробка передач'
-    )
-    drive_type = models.CharField(
-        max_length=10,
-        choices=DRIVE_CHOICES,
-        default='fwd',
-        verbose_name='Привод'
-    )
-    image = models.ImageField(
-        upload_to='cars/',
-        blank=True,
-        null=True,
-        verbose_name='Фотография'
-    )
-    description = models.TextField(blank=True, verbose_name='Описание и комплектация')
-    is_available = models.BooleanField(default=True, verbose_name='Доступен к заказу')
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата добавления')
-    
-    @property
-    def formatted_price(self):
-        return f'{int(self.price):,}'.replace(',', ' ')
+    ENGINE = [("electric", "Электро"), ("hybrid", "Гибрид"), ("petrol", "Бензин")]
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE, related_name="cars", verbose_name="Бренд")
+    name = models.CharField("Модель", max_length=100)
+    year = models.PositiveIntegerField("Год", default=2024)
+    engine = models.CharField("Двигатель", max_length=20, choices=ENGINE, default="electric")
+    power = models.PositiveIntegerField("Мощность, л.с.", default=200)
+    range_km = models.PositiveIntegerField("Запас хода, км", default=600)
+    accel = models.CharField("Разгон 0-100", max_length=20, default="5.0 с")
+    price_cny = models.DecimalField("Цена, юани", max_digits=12, decimal_places=2, default=250000)
+    photo = models.CharField("Фото (путь от static)", max_length=255, blank=True)
+    slug = models.SlugField("Адрес", max_length=160, unique=True, blank=True)
+    description = models.TextField("Описание", blank=True)
 
     class Meta:
-        verbose_name = 'Автомобиль'
-        verbose_name_plural = 'Автомобили'
-        ordering = ['-created_at']
+        verbose_name = "Автомобиль"
+        verbose_name_plural = "Автомобили"
+        ordering = ["-year", "name"]
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(f"{self.brand.name}-{self.name}")[:160]
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.brand.name} {self.model_name} ({self.year})'
-    @property
-    def get_image_url(self):
-        if self.static_image:
-            return static(self.static_image)
-        if self.image:
-            return self.image.url
-        return ''
-    
+        return f"{self.brand.name} {self.name}"
+
+
+class Trim(models.Model):
+    car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name="trims")
+    name = models.CharField("Комплектация", max_length=100)
+    extra_cny = models.DecimalField("Доплата, юани", max_digits=12, decimal_places=2, default=0)
+
+    def __str__(self):
+        return f"{self.car.name} {self.name}"
+
+
+class Option(models.Model):
+    name = models.CharField("Опция", max_length=100)
+    price_cny = models.DecimalField("Цена, юани", max_digits=12, decimal_places=2, default=0)
+
+    def __str__(self):
+        return self.name

@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /accounts/
+Disallow: /order/
+Disallow: /callback/
+Sitemap: {{ base_url }}/sitemap.xml

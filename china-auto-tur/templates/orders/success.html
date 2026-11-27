@@ -1,0 +1,16 @@
+{% extends 'base.html' %} {% block title %}Заявка отправлена china-auto-tur{%
+endblock %} {% block content %}
+<section class="success-page">
+  <div class="success-page__box">
+    <div class="success-page__circle">✓</div>
+    <h1 class="success-page__title">Заявка отправлена</h1>
+    <p class="success-page__text">
+      Менеджер перезвонит в течение 15 минут в рабочее время и пришлёт полный
+      расчёт под ключ по вашей машине.
+    </p>
+    <a href="{% url 'catalog:list' %}" class="btn btn--primary btn--m"
+      >Вернуться в каталог</a
+    >
+  </div>
+</section>
+{% endblock %}

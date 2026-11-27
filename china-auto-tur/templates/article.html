@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}{{ a.title }}{% endblock %}
+{% block desc %}{{ a.lead|truncatewords:24 }}{% endblock %}
+{% block content %}<section class="sec"><div class="wrap narrow">
+  <nav class="crumbs"><a href="/">Главная</a> / <a href="/news/">Новости</a> / <span>{{ a.title|truncatewords:4 }}</span></nav>
+  <h1>{{ a.title }}</h1>
+  <p class="muted">{{ a.published|date:"d.m.Y" }}</p>
+  <p class="lead">{{ a.lead }}</p>
+  {% if anchors %}<nav class="toc"><b>Оглавление</b>{% for id, text in anchors %}<a href="#{{ id }}">{{ text }}</a>{% endfor %}</nav>{% endif %}
+  <div class="text">{{ a.body|safe }}</div>
+  <div class="cta"><div><h2>Подберём авто под бюджет</h2><p>Расчёт под ключ за 15 минут.</p></div><a class="btn" href="/contacts/">Получить консультацию</a></div>
+  {% if others %}<h2>Другие статьи</h2><div class="cards">{% for o in others %}<a class="news" href="/news/{{ o.slug }}/"><div class="cover"></div><h3>{{ o.title }}</h3></a>{% endfor %}</div>{% endif %}
+</div></section>{% endblock %}

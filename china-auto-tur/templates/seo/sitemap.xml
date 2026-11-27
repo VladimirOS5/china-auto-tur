@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>{{ base_url }}/</loc></url>
+  <url><loc>{{ base_url }}/catalog/</loc></url>
+  <url><loc>{{ base_url }}/about/</loc></url>
+  <url><loc>{{ base_url }}/contacts/</loc></url>
+  <url><loc>{{ base_url }}/news/</loc></url>
+  <url><loc>{{ base_url }}/policy/</loc></url>
+  {% for car in cars %}<url><loc>{{ base_url }}/catalog/{{ car.slug }}/</loc></url>
+  {% endfor %}{% for a in articles %}<url><loc>{{ base_url }}/news/{{ a.slug }}/</loc></url>
+  {% endfor %}
+</urlset>

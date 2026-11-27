@@ -1,40 +1,80 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% load static %} {% block title %}{{ article.title
+}}{% endblock %} {% block meta %}
+<meta name="description" content="{{ article.lead|truncatewords:25 }}" />
+<link
+  rel="canonical"
+  href="{{ request.scheme }}://{{ request.get_host }}{% url 'blog:article' article.slug %}"
+/>
+{% endblock %} {% block content %}
+<article class="article">
+  <div class="container container--narrow">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки">
+      <a href="/" class="breadcrumbs__link">Главная</a
+      ><span class="breadcrumbs__separator">/</span>
+      <a href="{% url 'blog:list' %}" class="breadcrumbs__link">Новости</a
+      ><span class="breadcrumbs__separator">/</span>
+      <span class="breadcrumbs__current"
+        >{{ article.title|truncatewords:4 }}</span
+      >
+    </nav>
 
-{% block title %}{{ post.title }} — China Auto Tur{% endblock %}
-
-{% block content %}
-<section class="container" style="max-width: 820px; margin: 40px auto;">
-    <a href="{% url 'post_list' %}" style="color: #aaa; text-decoration: none;">← Все новости</a>
-
-    {% if messages %}
-        {% for message in messages %}
-            <div style="padding: 12px 16px; background: rgba(37, 99, 235, 0.2); border: 1px solid #2563eb; border-radius: 8px; margin-top: 16px;">
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
-
-    <h1 style="margin: 18px 0 10px;">{{ post.title }}</h1>
-    <p style="color: #888; font-size: 14px; margin-bottom: 24px;">
-        Опубликовано {{ post.created_at|date:"d.m.Y H:i" }}
+    <h1 class="article__title">{{ article.title }}</h1>
+    <p class="article__meta">
+      {{ article.published_at|date:"d.m.Y" }} · {{ minutes }} мин чтения
     </p>
+    <p class="article__lead">{{ article.lead }}</p>
 
-    {% if post.image %}
-        <img src="{{ post.image.url }}" alt="{{ post.title }}" style="width: 100%; max-height: 440px; object-fit: cover; border-radius: 12px; margin-bottom: 24px;">
+    {% if anchors %}
+    <nav class="toc" aria-label="Оглавление статьи">
+      <span class="toc__title">Оглавление</span>
+      {% for id, text in anchors %}<a href="#{{ id }}" class="toc__link"
+        >{{ text }}</a
+      >{% endfor %}
+    </nav>
     {% endif %}
 
-    <div style="line-height: 1.75; font-size: 16px;">
-        {{ post.content|linebreaks }}
+    <div class="article__body">{{ article.body|safe }}</div>
+
+    <div class="cta-panel cta-panel--article">
+      <div class="cta-panel__text">
+        <h2 class="section-title">Подберём автомобиль под ваш бюджет</h2>
+        <p>
+          Менеджер перезвонит за 15 минут и пришлёт расчёт под ключ по выбранной
+          машине.
+        </p>
+      </div>
+      <a href="{% url 'pages:contacts' %}" class="btn btn--primary btn--m"
+        >Получить консультацию</a
+      >
     </div>
 
-    {% if user.is_authenticated and user.is_manager %}
-        <div style="margin-top: 32px; padding-top: 20px; border-top: 1px solid #333; display: flex; gap: 12px;">
-            <a href="{% url 'post_edit' post.pk %}" class="btn btn--outline">Редактировать</a>
-            <form method="post" action="{% url 'post_delete' post.pk %}" onsubmit="return confirm('Удалить эту новость?');">
-                {% csrf_token %}
-                <button type="submit" class="btn btn--outline" style="border-color: #ef4444; color: #ef4444;">Удалить</button>
-            </form>
-        </div>
+    {% if others %}
+    <section class="article__others">
+      <h2 class="section-title">Другие статьи</h2>
+      <div class="news-grid">
+        {% for a in others %}
+        <a href="{% url 'blog:article' a.slug %}" class="news-card">
+          {% if a.cover %}<img
+            src="{% static a.cover %}"
+            alt="{{ a.title }}"
+            class="news-card__cover"
+            loading="lazy"
+          />{% else %}
+          <div class="news-card__cover news-card__cover--fallback">
+            <span class="icon">article</span>
+          </div>
+          {% endif %}
+          <div class="news-card__body">
+            <time class="news-card__date"
+              >{{ a.published_at|date:"d.m.Y" }}</time
+            >
+            <h3 class="news-card__title">{{ a.title }}</h3>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </section>
     {% endif %}
-</section>
+  </div>
+</article>
 {% endblock %}

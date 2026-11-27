@@ -1,50 +1,45 @@
-{% extends 'base.html' %}
-
-{% block title %}Новости и обзоры — China Auto Tur{% endblock %}
-
-{% block content %}
-<section class="container" style="margin: 40px auto;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-        <h1>Новости и обзоры авто</h1>
-
-        {% if user.is_authenticated and user.is_manager %}
-            <a href="{% url 'post_create' %}" class="btn btn--primary btn--m">+ Добавить новость</a>
-        {% endif %}
-    </div>
-
-    {% if posts %}
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px;">
-            {% for post in posts %}
-                <article style="border: 1px solid #333; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column;">
-                    {% if post.image %}
-                        <img src="{{ post.image.url }}" alt="{{ post.title }}" style="width: 100%; height: 200px; object-fit: cover;">
-                    {% else %}
-                        <div style="width: 100%; height: 200px; background: #1f242d; display: flex; align-items: center; justify-content: center; color: #777;">
-                            China Auto Tur
-                        </div>
-                    {% endif %}
-
-                    <div style="padding: 18px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
-                        <div>
-                            <span style="color: #888; font-size: 13px;">{{ post.created_at|date:"d.m.Y" }}</span>
-                            <h3 style="margin: 6px 0 10px;">{{ post.title }}</h3>
-                            <p style="color: #bbb; font-size: 14px; line-height: 1.5;">
-                                {{ post.excerpt|default:post.content|truncatewords:22 }}
-                            </p>
-                            {% if not post.is_published %}
-                                <span style="display: inline-block; margin-top: 8px; color: #f87171; font-size: 13px;">Черновик (скрыто от клиентов)</span>
-                            {% endif %}
-                        </div>
-
-                        <div style="margin-top: 18px;">
-                            <a href="{% url 'post_detail' post.pk %}" class="btn btn--outline">Читать далее</a>
-                        </div>
-                    </div>
-                </article>
-            {% endfor %}
+{% extends 'base.html' %} {% load static %} {% block title %}Блог об авто из
+Китая статьи и новости china-auto-tur{% endblock %} {% block meta %}
+<meta
+  name="description"
+  content="Экспертные статьи о подборе, таможне и доставке автомобилей из Китая: реальные кейсы, изменения ставок и обзоры брендов."
+/>
+<meta
+  name="keywords"
+  content="блог об авто из Китая, статьи импорт авто, таможенная пошлина авто из Китая"
+/>
+{% endblock %} {% block content %}
+<section class="news-page">
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки">
+      <a href="/" class="breadcrumbs__link">Главная</a
+      ><span class="breadcrumbs__separator">/</span
+      ><span class="breadcrumbs__current">Новости</span>
+    </nav>
+    <h1 class="cabinet__title">Новости и статьи об импорте авто</h1>
+    <div class="news-grid news-grid--full">
+      {% for a in articles %}
+      <a href="{% url 'blog:article' a.slug %}" class="news-card">
+        {% if a.cover %}<img
+          src="{% static a.cover %}"
+          alt="{{ a.title }}"
+          class="news-card__cover"
+          loading="lazy"
+        />{% else %}
+        <div class="news-card__cover news-card__cover--fallback">
+          <span class="icon">article</span>
         </div>
-    {% else %}
-        <p style="color: #aaa;">Новостей пока нет.</p>
-    {% endif %}
+        {% endif %}
+        <div class="news-card__body">
+          <time class="news-card__date">{{ a.published_at|date:"d.m.Y" }}</time>
+          <h3 class="news-card__title">{{ a.title }}</h3>
+          <p class="news-card__lead">{{ a.lead|truncatewords:18 }}</p>
+        </div>
+      </a>
+      {% empty %}
+      <p class="text-muted">Статьи готовятся к публикации.</p>
+      {% endfor %}
+    </div>
+  </div>
 </section>
 {% endblock %}

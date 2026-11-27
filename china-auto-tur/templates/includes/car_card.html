@@ -1,0 +1,40 @@
+{% load static %} {# карточка авто: одна ссылка на всю карточку, ссылочный вес
+не делим #}
+<a href="{% url 'catalog:card' car.slug %}" class="car-card">
+  {% if car.photo %}
+  <img
+    src="{% static car.photo %}"
+    alt="{% firstof car.brand_name car.brand.name_ru %} {{ car.name }} купить из Китая"
+    class="car-card__photo"
+    loading="lazy"
+    width="384"
+    height="240"
+  />
+  {% else %}
+  <div class="car-card__photo car-card__photo--empty">Фото скоро появится</div>
+  {% endif %}
+  <div class="car-card__body">
+    <span class="car-card__brand"
+      >{% firstof car.brand_name car.brand.name_ru %}</span
+    >
+    <h3 class="car-card__title">{{ car.name }}</h3>
+    <div class="car-card__specs">
+      <div class="spec">
+        <span class="spec__label">Мощность</span
+        ><span class="spec__value">{{ car.power|default:"—" }}</span>
+      </div>
+      <div class="spec">
+        <span class="spec__label">Запас хода</span
+        ><span class="spec__value">{{ car.battery|default:"—" }}</span>
+      </div>
+      <div class="spec">
+        <span class="spec__label">Разгон</span
+        ><span class="spec__value">{{ car.acceleration|default:"—" }}</span>
+      </div>
+    </div>
+    <div class="car-card__footer">
+      <span class="car-card__year">{{ car.year }} год</span>
+      <span class="car-card__price">{{ car.price_cny|floatformat:0 }} ¥</span>
+    </div>
+  </div>
+</a>

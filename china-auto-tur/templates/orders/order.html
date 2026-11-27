@@ -1,21 +1,123 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Оставить заявку — China Auto Tur{% endblock %}
+{% block title %}Заказ автомобиля из Китая заявка и расчёт под ключ{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Оформите заявку на {{ car.brand.name_ru }} {{ car.name }} из Китая: выберите комплектацию и опции, оставьте контакты — менеджер перезвонит за 15 минут и пришлёт расчёт под ключ.">
+{% endblock %}
 
 {% block content %}
-<section class="container" style="max-width: 560px; margin: 40px auto;">
-    <h1>Заявка на подбор или покупку авто</h1>
-    <p style="color: #aaa; margin: 10px 0 24px;">
-        Оставьте контакты — менеджер рассчитает итоговую стоимость под ключ и свяжется с вами.
-    </p>
+<section class="order-page">
+    <div class="container">
+        <nav class="breadcrumbs" aria-label="Хлебные крошки">
+            <a href="/" class="breadcrumbs__link">Главная</a>
+            <span class="breadcrumbs__separator">/</span>
+            <a href="{% url 'catalog:list' %}" class="breadcrumbs__link">Каталог</a>
+            <span class="breadcrumbs__separator">/</span>
+            <span class="breadcrumbs__current">Заказ</span>
+        </nav>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <div style="display: flex; gap: 12px; margin-top: 20px;">
-            <button type="submit" class="btn btn--primary btn--m">Отправить заявку</button>
-            <a href="{% url 'car_list' %}" class="btn btn--outline">В каталог</a>
+        <h1 class="order-page__title">Оформление заказа автомобиля из Китая</h1>
+
+        {# прогресс: первый шаг пройден выбором машины, второй заполняем сейчас #}
+        <div class="order-progress">
+            <div class="order-progress__step order-progress__step--done"><span>1</span>Авто</div>
+            <div class="order-progress__line"></div>
+            <div class="order-progress__step order-progress__step--active"><span>2</span>Контакты</div>
+            <div class="order-progress__line"></div>
+            <div class="order-progress__step"><span>3</span>Подтверждение</div>
         </div>
-    </form>
+
+        {# одна форма на обе колонки: сводка слева тоже участвует в отправке #}
+        <form method="post" class="order-page__layout">
+            {% csrf_token %}
+
+            <aside class="order-summary">
+                <div class="order-summary__car">
+                    {% if car.photo %}
+                        <img src="{% static car.photo %}" alt="{{ car.name }}" width="160" height="100">
+                    {% endif %}
+                    <div>
+                        <h3>{{ car.brand.name_ru }} {{ car.name }}</h3>
+                        <p class="order-summary__price">{{ car.price_cny|floatformat:0 }} ¥</p>
+                    </div>
+                </div>
+
+                <label class="field-label">Комплектация</label>
+                <select name="trim" class="field">
+                    <option value="" data-delta="0">Базовая</option>
+                    {% for t in trims %}
+                        <option value="{{ t.id }}" data-delta="{{ t.price_delta }}"
+                            {% if form.trim == t.id|stringformat:'i' %}selected{% endif %}>
+                            {{ t.name }} (+{{ t.price_delta|floatformat:0 }} ¥)
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <label class="field-label">Цвет</label>
+                <div class="swatches">
+                    {% for value, label in colors %}
+                        <label class="swatch swatch--{{ value }}" title="{{ label }}">
+                            <input type="radio" name="color" value="{{ value }}"
+                                {% if form.color == value or not form.color and value == 'white' %}checked{% endif %}>
+                        </label>
+                    {% endfor %}
+                </div>
+
+                <label class="field-label">Опции</label>
+                {% for opt in options %}
+                    <label class="option-row">
+                        <input type="checkbox" name="options" value="{{ opt.id }}"
+                               data-price="{{ opt.price_cny }}"
+                               {% if opt.id|stringformat:'i' in selected_options %}checked{% endif %}>
+                        <span>{{ opt.name }}</span>
+                        <span class="option-row__price">+{{ opt.price_cny|floatformat:0 }} ¥</span>
+                    </label>
+                {% empty %}
+                    <p class="text-muted">Опции пока не добавлены</p>
+                {% endfor %}
+
+                <div class="order-summary__total">
+                    <span>Итого</span>
+                    <span id="order-total" data-base="{{ car.price_cny }}">{{ car.price_cny|floatformat:0 }} ¥</span>
+                </div>
+            </aside>
+
+            <div class="order-form">
+                <label class="field-label">Имя</label>
+                <input class="field {% if errors.name %}field--error{% endif %}" name="name"
+                       value="{{ form.name }}" placeholder="Как к вам обращаться">
+                {% if errors.name %}<p class="error-text">{{ errors.name }}</p>{% endif %}
+
+                <label class="field-label">Телефон</label>
+                <input class="field {% if errors.phone %}field--error{% endif %}" name="phone"
+                       value="{{ form.phone }}" placeholder="+7 (___) ___-__-__">
+                {% if errors.phone %}<p class="error-text">{{ errors.phone }}</p>{% endif %}
+
+                <label class="field-label">Email</label>
+                <input class="field" name="email" type="email" value="{{ form.email }}" placeholder="Необязательно">
+
+                <label class="field-label">Город</label>
+                <select name="city" class="field">
+                    {% for value, label in cities %}
+                        <option value="{{ value }}" {% if form.city == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+
+                <label class="field-label">Комментарий</label>
+                <textarea class="field field--textarea" name="comment" placeholder="Пожелания к машине и доставке">{{ form.comment }}</textarea>
+
+                <label class="checkbox-row">
+                    <input type="checkbox" name="consent" {% if form.consent %}checked{% endif %}>
+                    <span>Согласен на обработку персональных данных,
+                        <a href="/policy/" class="link">политика конфиденциальности</a></span>
+                </label>
+                {% if errors.consent %}<p class="error-text">{{ errors.consent }}</p>{% endif %}
+
+                <button type="submit" class="btn btn--primary btn--l">Отправить заявку</button>
+            </div>
+        </form>
+    </div>
 </section>
 {% endblock %}

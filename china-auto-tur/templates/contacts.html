@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Контакты china-auto-tur офисы в Москве и Китае{% endblock %}
+{% block content %}<section class="sec"><div class="wrap">
+  <nav class="crumbs"><a href="/">Главная</a> / <span>Контакты</span></nav>
+  <h1>Контакты</h1>
+  {% if sent %}<p class="ok-msg">Сообщение отправлено, ответим в течение 15 минут.</p>{% endif %}
+  <div class="carlayout">
+    <div>
+      <p class="contact"><span>Телефон</span><a href="tel:+74950000000">+7 (495) 000-00-00</a></p>
+      <p class="contact"><span>Почта</span><a href="mailto:hello@china-auto-tur.ru">hello@china-auto-tur.ru</a></p>
+      <p class="contact"><span>Режим</span><b>Пн–Вс 9:00–21:00 МСК</b></p>
+      <div class="row"><a class="btn ghost" href="https://t.me/chinaautotur">Telegram</a><a class="btn ghost" href="https://wa.me/74950000000">WhatsApp</a><a class="btn ghost" href="https://vk.com/chinaautotur">VK</a></div>
+      <div class="branches"><div><h3>Москва</h3><p>Пресненская наб., 12, офис 45</p></div><div><h3>Шанхай</h3><p>Pudong, Century Avenue 100</p></div></div>
+    </div>
+    <form method="post" class="form">{% csrf_token %}
+      <label>Имя</label><input name="name" value="{{ form.name }}">{% if errors.name %}<p class="err">{{ errors.name }}</p>{% endif %}
+      <label>Телефон</label><input name="phone" value="{{ form.phone }}">{% if errors.phone %}<p class="err">{{ errors.phone }}</p>{% endif %}
+      <label>Сообщение</label><textarea name="text" rows="4">{{ form.text }}</textarea>
+      <label class="chk"><input type="checkbox" name="consent"><span>Согласен на обработку данных, <a href="/policy/">политика</a></span></label>
+      {% if errors.consent %}<p class="err">{{ errors.consent }}</p>{% endif %}
+      <button class="btn">Отправить</button>
+    </form>
+  </div>
+</div></section>{% endblock %}

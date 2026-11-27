@@ -1,74 +1,41 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib import messages
-from accounts.decorators import manager_required
+from django.db import connection
+from django.shortcuts import render, get_object_or_404
+
 from .models import Brand, Car
-from .forms import CarForm
 
 
-def car_list_view(request):
-    brands = Brand.objects.all()
-    if request.user.is_authenticated and request.user.is_manager:
-        cars = Car.objects.select_related('brand').all()
-    else:
-        cars = Car.objects.select_related('brand').filter(is_available=True)
-
-    brand_slug = request.GET.get('brand')
-    if brand_slug:
-        cars = cars.filter(brand__slug=brand_slug)
-
-    context = {
-        'cars': cars,
-        'brands': brands,
-        'selected_brand': brand_slug,
-    }
-    return render(request, 'catalog/list.html', context)
-
-
-def car_detail_view(request, pk):
-    car = get_object_or_404(Car, pk=pk)
-    return render(request, 'catalog/card.html', {'car': car})
-
-
-@manager_required
-def car_create_view(request):
-    if request.method == 'POST':
-        form = CarForm(request.POST, request.FILES)
-        if form.is_valid():
-            car = form.save()
-            messages.success(request, f'Автомобиль {car} добавлен в каталог.')
-            return redirect('car_detail', pk=car.pk)
-    else:
-        form = CarForm()
-
-    return render(request, 'catalog/car_form.html', {
-        'form': form,
-        'title': 'Добавить автомобиль',
-    })
+def catalog(request):
+    # динамический SQL: условия доклеиваем по выбранным фильтрам
+    sql = """SELECT c.id, c.name, c.year, c.price_cny, c.photo, c.slug, c.power,
+                    c.range_km, c.accel, b.name AS brand
+             FROM catalog_car c JOIN catalog_brand b ON b.id = c.brand_id WHERE 1=1"""
+    params = []
+    brand = request.GET.get("brand", "")
+    if brand.isdigit():
+        sql += " AND b.id = %s"
+        params.append(int(brand))
+    low = request.GET.get("low", "")
+    if low.isdigit():
+        sql += " AND c.price_cny >= %s"
+        params.append(int(low))
+    high = request.GET.get("high", "")
+    if high.isdigit():
+        sql += " AND c.price_cny <= %s"
+        params.append(int(high))
+    sort = request.GET.get("sort", "year")
+    sql += " ORDER BY " + {"price_up": "c.price_cny ASC",
+                           "price_down": "c.price_cny DESC",
+                           "year": "c.year DESC"}.get(sort, "c.year DESC")
+    with connection.cursor() as cur:
+        cur.execute(sql, params)
+        cols = [c[0] for c in cur.description]
+        cars = [dict(zip(cols, row)) for row in cur.fetchall()]
+    return render(request, "catalog.html", {
+        "cars": cars, "brands": Brand.objects.all(),
+        "brand": brand, "low": low, "high": high, "sort": sort})
 
 
-@manager_required
-def car_edit_view(request, pk):
-    car = get_object_or_404(Car, pk=pk)
-    if request.method == 'POST':
-        form = CarForm(request.POST, request.FILES, instance=car)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Данные автомобиля обновлены.')
-            return redirect('car_detail', pk=car.pk)
-    else:
-        form = CarForm(instance=car)
-
-    return render(request, 'catalog/car_form.html', {
-        'form': form,
-        'title': f'Редактировать: {car}',
-    })
-
-
-@manager_required
-def car_delete_view(request, pk):
-    car = get_object_or_404(Car, pk=pk)
-    if request.method == 'POST':
-        car.delete()
-        messages.success(request, 'Автомобиль удалён из каталога.')
-        return redirect('car_list')
-    return redirect('car_detail', pk=pk)
+def car_page(request, slug):
+    car = get_object_or_404(Car, slug=slug)
+    similar = Car.objects.filter(brand=car.brand).exclude(pk=car.pk)[:3]
+    return render(request, "car.html", {"car": car, "similar": similar})

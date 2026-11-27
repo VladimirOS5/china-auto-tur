@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Каталог автомобилей из Китая цены и комплектации{% endblock %}
+{% block content %}
+<section class="sec"><div class="wrap">
+  <nav class="crumbs"><a href="/">Главная</a> / <span>Каталог</span></nav>
+  <h1>Каталог автомобилей из Китая</h1>
+  <p class="muted">Найдено {{ cars|length }}</p>
+  <div class="layout">
+    <aside class="filters">
+      <form method="get">
+        <label>Бренд</label>
+        <select name="brand"><option value="">Все бренды</option>{% for b in brands %}<option value="{{ b.id }}" {% if brand == b.id|stringformat:"i" %}selected{% endif %}>{{ b.name }}</option>{% endfor %}</select>
+        <label>Цена от, ¥</label><input name="low" value="{{ low }}" type="number">
+        <label>Цена до, ¥</label><input name="high" value="{{ high }}" type="number">
+        <label>Сортировка</label>
+        <select name="sort"><option value="year" {% if sort == "year" %}selected{% endif %}>Сначала новые</option><option value="price_up" {% if sort == "price_up" %}selected{% endif %}>Дешевле</option><option value="price_down" {% if sort == "price_down" %}selected{% endif %}>Дороже</option></select>
+        <button class="btn wide">Применить</button>
+        <a class="btn ghost wide" href="/catalog/">Сбросить</a>
+      </form>
+    </aside>
+    <div>
+      <div class="cards">{% for car in cars %}{% include 'card.html' %}{% empty %}<p class="muted">По фильтру ничего нет. <a class="link" href="/catalog/">Сбросить фильтры</a></p>{% endfor %}</div>
+    </div>
+  </div>
+</div></section>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}Блог об авто из Китая статьи и новости china-auto-tur{% endblock %}
+{% block content %}<section class="sec"><div class="wrap">
+  <nav class="crumbs"><a href="/">Главная</a> / <span>Новости</span></nav>
+  <h1>Новости и статьи об импорте авто</h1>
+  <div class="cards">{% for a in articles %}<a class="news" href="/news/{{ a.slug }}/"><div class="cover"></div><time>{{ a.published|date:"d.m.Y" }}</time><h3>{{ a.title }}</h3><p>{{ a.lead|truncatewords:16 }}</p></a>{% endfor %}</div>
+</div></section>{% endblock %}

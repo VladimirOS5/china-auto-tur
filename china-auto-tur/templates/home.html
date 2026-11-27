@@ -1,0 +1,115 @@
+{% extends "base.html" %} {% load static %} {% block title %}Автомобили из Китая
+под ключ — главная china-auto-tur{% endblock %} {% block content %}
+<section class="hero">
+  <h1 class="sr-only">Автомобили из Китая под ключ</h1>
+  <div class="hero-cards">
+    {% if cars.1.photo %}<img
+      class="card-side"
+      src="{% static cars.1.photo %}"
+      alt="{{ cars.1.name }}"
+    />{% endif %} {% if cars.0.photo %}<img
+      class="card-main"
+      src="{% static cars.0.photo %}"
+      alt="{{ cars.0.name }}"
+    />{% endif %} {% if cars.2.photo %}<img
+      class="card-side"
+      src="{% static cars.2.photo %}"
+      alt="{{ cars.2.name }}"
+    />{% endif %}
+  </div>
+  <a class="news-banner" href="/news/"><span>NEWS 2026</span></a>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <h2>Бренды, с которыми мы работаем</h2>
+    <div class="brands">
+      {% for b in brands %}
+      <a class="tile" href="/catalog/?brand={{ b.id }}"
+        ><b>{{ b.name }}</b><span>{{ b.cars.count }} моделей</span></a
+      >
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="head">
+      <h2>Популярные авто</h2>
+      <a class="link" href="/catalog/">Каталог автомобилей из Китая →</a>
+    </div>
+    <div class="cards">
+      {% for car in cars %}{% include "card.html" %}{% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="sec dark">
+  <div class="wrap">
+    <h2>Как мы работаем</h2>
+    <div class="steps">
+      <div class="step">
+        <i>01</i>
+        <h3>Заявка</h3>
+        <p>Обсуждаем бюджет и пожелания.</p>
+      </div>
+      <div class="step">
+        <i>02</i>
+        <h3>Подбор</h3>
+        <p>Проверяем историю и состояние.</p>
+      </div>
+      <div class="step">
+        <i>03</i>
+        <h3>Договор</h3>
+        <p>Фиксируем цену и сроки.</p>
+      </div>
+      <div class="step">
+        <i>04</i>
+        <h3>Доставка</h3>
+        <p>Таможня и передача ключей.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="head">
+      <h2>Новости</h2>
+      <a class="link" href="/news/">Новости об авто из Китая →</a>
+    </div>
+    <div class="cards">
+      {% for a in articles %}
+      <a class="news" href="/news/{{ a.slug }}/"
+        ><div class="cover"></div>
+        <time>{{ a.published|date:"d.m.Y" }}</time>
+        <h3>{{ a.title }}</h3></a
+      >
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="sec dark">
+  <div class="wrap">
+    <h2>Нужна помощь с выбором?</h2>
+    <p class="lead">
+      Оставьте номер — перезвоним за 15 минут и пришлём расчёт под ключ.
+    </p>
+    {% if sent %}
+    <p class="ok-msg">Спасибо! Менеджер перезвонит.</p>
+    {% endif %}
+    <form class="form" method="post" action="/callback/">
+      {% csrf_token %}
+      <div class="row">
+        <input name="phone" placeholder="+7 ___ ___ __ __" />
+        <button class="btn red">Перезвоните мне</button>
+      </div>
+      <p class="note">
+        Нажимая кнопку, вы соглашаетесь с <a href="/policy/">политикой</a>.
+      </p>
+    </form>
+  </div>
+</section>
+{% endblock %}

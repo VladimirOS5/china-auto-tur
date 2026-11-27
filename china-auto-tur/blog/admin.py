@@ -1,10 +1,4 @@
 from django.contrib import admin
-from .models import Post
+from .models import Article
 
-
-@admin.register(Post)
-class PostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'is_published', 'created_at')
-    list_filter = ('is_published', 'created_at')
-    search_fields = ('title', 'content')
-    list_editable = ('is_published',)
+admin.site.register(Article)

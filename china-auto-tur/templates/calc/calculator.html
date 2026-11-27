@@ -1,0 +1,274 @@
+{% extends 'base.html' %} {% block title %}Калькулятор стоимости авто из Китая
+расчёт цены под ключ{% endblock %} {% block meta %}
+<meta
+  name="description"
+  content="Рассчитайте цену автомобиля из Китая под ключ: пошлина, акциз, НДС, утильсбор, логистика и комиссия. Плюс кредитный расчёт с графиком платежей."
+/>
+<meta
+  name="keywords"
+  content="калькулятор авто из Китая, расчёт под ключ, таможенная пошлина калькулятор, кредит на авто из Китая"
+/>
+{% endblock %} {% block content %}
+<section class="calc-page">
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки">
+      <a href="/" class="breadcrumbs__link">Главная</a
+      ><span class="breadcrumbs__separator">/</span
+      ><span class="breadcrumbs__current">Расчёт под ключ</span>
+    </nav>
+    <h1 class="cabinet__title">Расчёт стоимости автомобиля под ключ</h1>
+    <p class="hero__lead">
+      Двигайте ползунки и меняйте поля — расчёт обновляется сразу. Курс и ставки
+      берутся из справочника, итог округляется до рубля.
+    </p>
+
+    <div class="calc-layout">
+      <form class="calc-controls" id="calc-form" onsubmit="return false;">
+        <label class="field-label">Автомобиль из каталога</label>
+        <select class="field" id="calc-car">
+          <option value="">Свой вариант</option>
+          {% for c in cars %}
+          <option
+            value="{{ c.id }}"
+            data-price="{{ c.price_cny }}"
+            data-power="{{ c.power }}"
+            data-engine="{{ c.engine }}"
+          >
+            {{ c.brand.name_ru }} {{ c.name }}
+          </option>
+          {% endfor %}
+        </select>
+
+        <label class="field-label">Цена в Китае, ¥</label>
+        <input
+          class="field"
+          type="number"
+          name="price_cny"
+          id="calc-price"
+          min="10000"
+          step="1000"
+          value="{{ p.price_cny|floatformat:0 }}"
+        />
+
+        <label class="field-label">Мощность, л.с.</label>
+        <input
+          class="field"
+          type="number"
+          name="power_hp"
+          id="calc-power"
+          min="50"
+          max="1500"
+          value="{{ p.power_hp|floatformat:0 }}"
+        />
+
+        <label class="field-label">Двигатель</label>
+        <select class="field" name="engine" id="calc-engine">
+          {% for value, label in engines %}
+          <option
+            value="{{ value }}"
+            {%
+            if
+            p.engine=""
+            ="value"
+            %}selected{%
+            endif
+            %}
+          >
+            {{ label }}
+          </option>
+          {% endfor %}
+        </select>
+
+        <label class="field-label">Возраст автомобиля</label>
+        <select class="field" name="age" id="calc-age">
+          {% for value, label in ages %}
+          <option
+            value="{{ value }}"
+            {%
+            if
+            p.age=""
+            ="value"
+            %}selected{%
+            endif
+            %}
+          >
+            {{ label }}
+          </option>
+          {% endfor %}
+        </select>
+
+        <div class="calc-rate">
+          Курс ЦБ: 1 ¥ = {{ currency.rate|default:"—" }} ₽
+        </div>
+
+        <label class="field-label"
+          >Первый взнос:
+          <span id="down-label"
+            >{{ p.down_percent|floatformat:0 }}%</span
+          ></label
+        >
+        <input
+          class="range"
+          type="range"
+          name="down_percent"
+          id="calc-down"
+          min="0"
+          max="60"
+          step="5"
+          value="{{ p.down_percent|floatformat:0 }}"
+        />
+
+        <label class="field-label"
+          >Срок кредита:
+          <span id="months-label">{{ p.months }} мес</span></label
+        >
+        <input
+          class="range"
+          type="range"
+          name="months"
+          id="calc-months"
+          min="6"
+          max="84"
+          step="6"
+          value="{{ p.months }}"
+        />
+
+        <label class="field-label"
+          >Ставка банка:
+          <span id="annual-label"
+            >{{ p.annual_percent|floatformat:1 }}%</span
+          ></label
+        >
+        <input
+          class="range"
+          type="range"
+          name="annual_percent"
+          id="calc-annual"
+          min="5"
+          max="25"
+          step="0.5"
+          value="{{ p.annual_percent|floatformat:1 }}"
+        />
+
+        <div class="calc-fees">
+          {% for f in fees %}
+          <div class="calc-fees__row">
+            <span>{{ f.name }}</span
+            ><span class="mono">{{ f.amount_rub|floatformat:0 }} ₽</span>
+          </div>
+          {% endfor %}
+        </div>
+      </form>
+
+      <div class="calc-result">
+        <div class="calc-total">
+          <span class="stat__label">Цена под ключ</span>
+          <span class="calc-total__num" id="r-total"
+            >{% if result %}{{ result.total|floatformat:0 }} ₽{% else %}—{%
+            endif %}</span
+          >
+        </div>
+
+        <table class="specs-table specs-table--full" id="calc-breakdown">
+          <tr>
+            <td>Цена в Китае в рублях</td>
+            <td id="r-price">
+              {% if result %}{{ result.price_rub|floatformat:0 }} ₽{% endif %}
+            </td>
+          </tr>
+          <tr>
+            <td>Таможенная пошлина</td>
+            <td id="r-duty">
+              {% if result %}{{ result.customs.duty|floatformat:0 }} ₽{% endif
+              %}
+            </td>
+          </tr>
+          <tr>
+            <td>Акциз</td>
+            <td id="r-excise">
+              {% if result %}{{ result.customs.excise|floatformat:0 }} ₽{% endif
+              %}
+            </td>
+          </tr>
+          <tr>
+            <td>НДС</td>
+            <td id="r-vat">
+              {% if result %}{{ result.customs.vat|floatformat:0 }} ₽{% endif %}
+            </td>
+          </tr>
+          <tr>
+            <td>Утильсбор</td>
+            <td id="r-util">
+              {% if result %}{{ result.customs.util|floatformat:0 }} ₽{% endif
+              %}
+            </td>
+          </tr>
+          <tr>
+            <td>Логистика, оформление, комиссия</td>
+            <td id="r-fees">
+              {% if result %}{{ result.fees_total|floatformat:0 }} ₽{% endif %}
+            </td>
+          </tr>
+        </table>
+
+        <div class="calc-credit">
+          <div class="calc-credit__tile">
+            <span class="stat__label">Ежемесячный платёж</span
+            ><span class="calc-credit__num" id="r-payment"
+              >{% if credit %}{{ credit.payment|floatformat:0 }} ₽{% endif
+              %}</span
+            >
+          </div>
+          <div class="calc-credit__tile">
+            <span class="stat__label">Первый взнос</span
+            ><span class="calc-credit__num" id="r-down"
+              >{% if credit %}{{ credit.down|floatformat:0 }} ₽{% endif %}</span
+            >
+          </div>
+          <div class="calc-credit__tile">
+            <span class="stat__label">Переплата по кредиту</span
+            ><span
+              class="calc-credit__num calc-credit__num--warn"
+              id="r-overpay"
+              >{% if credit %}{{ credit.overpay|floatformat:0 }} ₽{% endif
+              %}</span
+            >
+          </div>
+        </div>
+
+        <svg
+          class="calc-chart"
+          id="calc-chart"
+          viewBox="0 0 600 160"
+          role="img"
+          aria-label="Состав платежа по месяцам: проценты и тело кредита"
+        ></svg>
+        <p class="calc-chart__legend">
+          <span class="dot dot--blue"></span>проценты банку
+          <span class="dot dot--fire"></span>тело кредита
+        </p>
+
+        <button
+          class="btn btn--secondary btn--m"
+          id="schedule-toggle"
+          type="button"
+        >
+          Показать график платежей
+        </button>
+        <table class="data-table calc-schedule" id="calc-schedule" hidden>
+          <thead>
+            <tr>
+              <th>Мес</th>
+              <th>Платёж</th>
+              <th>Проценты</th>
+              <th>Тело</th>
+              <th>Остаток</th>
+            </tr>
+          </thead>
+          <tbody id="calc-schedule-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,50 +1,60 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
-from accounts.decorators import manager_required
-from catalog.models import Car
+from django.views.decorators.http import require_POST
+
+from catalog.models import Car, Option
+from config.utils import digits_ok
+from pages.models import Message
 from .models import Order
-from .forms import OrderForm
 
 
-def order_create_view(request):
-    initial_data = {}
+def order_page(request):
+    car = get_object_or_404(Car, slug=request.GET.get("car", ""))
+    trims = list(car.trims.all())
+    options = list(Option.objects.all())
+    errors, form = {}, {}
+    if request.method == "POST":
+        form = request.POST
+        name = form.get("name", "").strip()
+        phone = form.get("phone", "").strip()
+        if not name:
+            errors["name"] = "Напишите имя"
+        if not digits_ok(phone):
+            errors["phone"] = "Телефон в формате +7 и 10 цифр"
+        if not form.get("consent"):
+            errors["consent"] = "Нужно согласие на обработку данных"
+        if not errors:
+            total = car.price_cny
+            trim = None
+            tid = form.get("trim", "")
+            if tid.isdigit():
+                trim = next((t for t in trims if t.pk == int(tid)), None)
+                if trim:
+                    total += trim.extra_cny
+            chosen = [o for o in options if str(o.pk) in form.getlist("options")]
+            for o in chosen:
+                total += o.price_cny
+            order = Order.objects.create(
+                car=car, trim=trim, name=name, phone=phone,
+                email=form.get("email", ""), city=form.get("city", ""),
+                comment=form.get("comment", ""), total_cny=total,
+                user=request.user if request.user.is_authenticated else None)
+            order.options.set(chosen)
+            return redirect("success")
+    return render(request, "order.html", {
+        "car": car, "trims": trims, "options": options, "errors": errors, "form": form})
 
-    car_id = request.GET.get('car')
-    if car_id and car_id.isdigit():
-        car = Car.objects.filter(pk=car_id).first()
-        if car:
-            initial_data['car'] = car
 
-    if request.user.is_authenticated:
-        full_name = f'{request.user.first_name} {request.user.last_name}'.strip()
-        initial_data['customer_name'] = full_name or request.user.username
-        if request.user.phone:
-            initial_data['phone'] = request.user.phone
-
-    if request.method == 'POST':
-        form = OrderForm(request.POST)
-        if form.is_valid():
-            order = form.save(commit=False)
-            if request.user.is_authenticated:
-                order.client = request.user
-            order.save()
-            messages.success(request, f'Заявка №{order.pk} успешно отправлена! Менеджер свяжется с вами в ближайшее время.')
-            if request.user.is_authenticated:
-                return redirect('cabinet_client')
-            return redirect('home')
-    else:
-        form = OrderForm(initial=initial_data)
-
-    return render(request, 'orders/order.html', {'form': form})
+def success(request):
+    return render(request, "success.html")
 
 
-@manager_required
-def order_status_update_view(request, pk):
-    order = get_object_or_404(Order, pk=pk)
-    if request.method == 'POST':
-        new_status = request.POST.get('status')
-        if new_status in dict(Order.STATUS_CHOICES):
-            order.status = new_status
-            order.save()
-            messages.success(request, f'Статус заявки №{order.pk} обновлён.')
-    return redirect('cabinet_manager')
+@require_POST
+def quick(request):
+    name = request.POST.get("name", "").strip()
+    phone = request.POST.get("phone", "").strip()
+    if not name or not digits_ok(phone) or not request.POST.get("consent"):
+        return JsonResponse({"ok": False, "error": "Проверьте имя, телефон и согласие"}, status=400)
+    Message.objects.create(kind="request", name=name, phone=phone,
+                           text=request.POST.get("comment", ""))
+    return JsonResponse({"ok": True})
