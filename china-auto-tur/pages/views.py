@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.decorators.http import require_POST
-
+from .models import HeroSlide
 from blog.models import Article
 from catalog.models import Brand, Car
 from config.utils import digits_ok
@@ -9,6 +9,7 @@ from .models import Message
 
 
 def home(request):
+    slides = HeroSlide.objects.filter(active=True)[:3]
     return render(
         request,
         "home.html",
@@ -16,6 +17,7 @@ def home(request):
             "brands": Brand.objects.all()[:8],
             "cars": Car.objects.all()[:3],
             "articles": Article.objects.all()[:3],
+            "slides": slides,
             "sent": request.GET.get("sent") == "1",
         },
     )

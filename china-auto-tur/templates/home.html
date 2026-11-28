@@ -1,38 +1,54 @@
-{% extends "base.html" %} {% load static %} {% block title %}Автомобили из Китая
-под ключ — главная china-auto-tur{% endblock %} {% block content %}
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Авто из Китая под ключ — подбор, выкуп и доставка за 30 дней{% endblock %}
+
+{% block desc %}Подберём и доставим автомобиль из Китая под ключ. Цена известна заранее: таможня, логистика и комиссия. Гарантия 2 года.{% endblock %}
+
+{% block content %}
+<!-- Главный экран: три фото авто + баннер NEWS 2026 -->
 <section class="hero">
   <h1 class="sr-only">Автомобили из Китая под ключ</h1>
   <div class="hero-cards">
-    {% if cars.1.photo %}<img
-      class="card-side"
-      src="{% static cars.1.photo %}"
-      alt="{{ cars.1.name }}"
-    />{% endif %} {% if cars.0.photo %}<img
-      class="card-main"
-      src="{% static cars.0.photo %}"
-      alt="{{ cars.0.name }}"
-    />{% endif %} {% if cars.2.photo %}<img
-      class="card-side"
-      src="{% static cars.2.photo %}"
-      alt="{{ cars.2.name }}"
-    />{% endif %}
+    {% if slides %}
+      {# Если админ добавил слайды — показываем их #}
+      {% for s in slides %}
+        <img src="{{ s.photo.url }}"
+             alt="{{ s.title|default:'Авто из Китая' }}"
+             class="{% if forloop.counter == 2 %}main{% else %}side{% endif %}">
+      {% endfor %}
+    {% else %}
+      {# Иначе берём первые три машины из каталога #}
+      {% for car in cars %}
+        {% if car.photo %}
+          <img src="{% static car.photo %}"
+               alt="{{ car.name }}"
+               class="{% if forloop.counter == 2 %}main{% else %}side{% endif %}">
+        {% endif %}
+      {% endfor %}
+    {% endif %}
   </div>
-  <a class="news-banner" href="/news/"><span>NEWS 2026</span></a>
+  <a class="news-banner" href="/news/">
+    <span>NEWS 2026</span>
+  </a>
 </section>
 
+<!-- Блок с популярными марками -->
 <section class="sec">
   <div class="wrap">
     <h2>Бренды, с которыми мы работаем</h2>
     <div class="brands">
       {% for b in brands %}
-      <a class="tile" href="/catalog/?brand={{ b.id }}"
-        ><b>{{ b.name }}</b><span>{{ b.cars.count }} моделей</span></a
-      >
+        <a class="tile" href="/catalog/?brand={{ b.id }}">
+          <b>{{ b.name }}</b>
+          <span>{{ b.cars.count }} моделей</span>
+        </a>
       {% endfor %}
     </div>
   </div>
 </section>
 
+<!-- Популярные авто -->
 <section class="sec">
   <div class="wrap">
     <div class="head">
@@ -40,39 +56,27 @@
       <a class="link" href="/catalog/">Каталог автомобилей из Китая →</a>
     </div>
     <div class="cards">
-      {% for car in cars %}{% include "card.html" %}{% endfor %}
+      {% for car in cars %}
+        {% include "card.html" %}
+      {% endfor %}
     </div>
   </div>
 </section>
 
+<!-- Как мы работаем -->
 <section class="sec dark">
   <div class="wrap">
     <h2>Как мы работаем</h2>
     <div class="steps">
-      <div class="step">
-        <i>01</i>
-        <h3>Заявка</h3>
-        <p>Обсуждаем бюджет и пожелания.</p>
-      </div>
-      <div class="step">
-        <i>02</i>
-        <h3>Подбор</h3>
-        <p>Проверяем историю и состояние.</p>
-      </div>
-      <div class="step">
-        <i>03</i>
-        <h3>Договор</h3>
-        <p>Фиксируем цену и сроки.</p>
-      </div>
-      <div class="step">
-        <i>04</i>
-        <h3>Доставка</h3>
-        <p>Таможня и передача ключей.</p>
-      </div>
+      <div class="step"><i>01</i><h3>Заявка</h3><p>Обсуждаем бюджет и пожелания.</p></div>
+      <div class="step"><i>02</i><h3>Подбор</h3><p>Проверяем историю и состояние.</p></div>
+      <div class="step"><i>03</i><h3>Договор</h3><p>Фиксируем цену и сроки.</p></div>
+      <div class="step"><i>04</i><h3>Доставка</h3><p>Таможня и передача ключей.</p></div>
     </div>
   </div>
 </section>
 
+<!-- Новости: берём поле body, а не content -->
 <section class="sec">
   <div class="wrap">
     <div class="head">
@@ -81,34 +85,29 @@
     </div>
     <div class="cards">
       {% for a in articles %}
-      <a class="news" href="/news/{{ a.slug }}/"
-        ><div class="cover"></div>
-        <time>{{ a.published|date:"d.m.Y" }}</time>
-        <h3>{{ a.title }}</h3></a
-      >
+        <a class="news" href="/news/{{ a.slug }}/">
+          <time>{{ a.published|date:"d.m.Y" }}</time>
+          <h3>{{ a.title }}</h3>
+          <p>{{ a.body|truncatewords:20 }}</p>
+        </a>
       {% endfor %}
     </div>
   </div>
 </section>
 
+<!-- Форма обратного звонка -->
 <section class="sec dark">
   <div class="wrap">
     <h2>Нужна помощь с выбором?</h2>
-    <p class="lead">
-      Оставьте номер — перезвоним за 15 минут и пришлём расчёт под ключ.
-    </p>
-    {% if sent %}
-    <p class="ok-msg">Спасибо! Менеджер перезвонит.</p>
-    {% endif %}
+    <p class="lead">Оставьте номер — перезвоним за 15 минут и пришлём расчёт под ключ.</p>
+    {% if sent %}<p class="ok-msg">Спасибо! Менеджер перезвонит.</p>{% endif %}
     <form class="form" method="post" action="/callback/">
       {% csrf_token %}
       <div class="row">
-        <input name="phone" placeholder="+7 ___ ___ __ __" />
+        <input name="phone" placeholder="+7 ___ ___ __ __">
         <button class="btn red">Перезвоните мне</button>
       </div>
-      <p class="note">
-        Нажимая кнопку, вы соглашаетесь с <a href="/policy/">политикой</a>.
-      </p>
+      <p class="note">Нажимая кнопку, вы соглашаетесь с <a href="/policy/">политикой</a>.</p>
     </form>
   </div>
 </section>

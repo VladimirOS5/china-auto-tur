@@ -1,7 +1,8 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block title %}Личный кабинет china-auto-tur{% endblock %}
 {% block content %}<section class="sec"><div class="wrap">
   <h1>{% if manager %}Очередь заявок{% else %}Мои заявки{% endif %}</h1>
+  <p class="muted">Вы вошли как {{ user.username }}. {% if manager %}Права менеджера: видны все заявки, статусы меняются прямо в таблице.{% else %}Здесь видны только ваши заявки и их статусы.{% endif %}</p>
   <table class="kv table">
     <thead><tr><th>№</th><th>Клиент</th><th>Авто</th><th>Статус</th><th>Сумма</th><th>Дата</th></tr></thead>
     <tbody>
@@ -17,5 +18,8 @@
     {% empty %}<tr><td colspan="6" class="muted">Заявок пока нет</td></tr>{% endfor %}
     </tbody>
   </table>
-  <a class="btn" href="/catalog/">Новая заявка</a>
+  <div class="row">
+    <a class="btn" href="/catalog/">Новая заявка</a>
+    <a class="btn" href="/purchases/">Мои закупки</a>
+  </div>
 </div></section>{% endblock %}

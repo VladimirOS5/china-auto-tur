@@ -3224,3 +3224,616 @@ body.no-scroll {
     margin-top: 16px;
   }
 }
+
+/* Фирменные цвета и размеры в одном месте:
+   меняем здесь — меняется весь сайт */
+:root {
+  --dark: #0a1128; /* тёмно-синий фон шапки */
+  --red: #e60000; /* красный: кнопки и акценты */
+  --cyan: #00a8ff; /* голубой: акцент логотипа и фокус */
+  --ink: #0b0b0d; /* почти чёрный фон страниц */
+  --paper: #f9fafc; /* светлый текст */
+  --muted: #a6a6b0; /* вторичный серый текст */
+  --line: #22222a; /* цвет рамок и разделителей */
+  --r: 14px; /* базовый радиус скруглений */
+}
+
+/* База: картинки не вылезают за экран, текст не масштабируется криво */
+img {
+  max-width: 100%;
+  height: auto;
+}
+body {
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Видимый фокус при навигации с клавиатуры (доступность) */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+/* Кнопки: плавное наведение и ощущение нажатия */
+.btn,
+.cta {
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease;
+}
+.btn:hover,
+.cta:hover {
+  transform: translateY(-1px);
+}
+.btn:active,
+.cta:active {
+  transform: translateY(0);
+}
+
+/* Бургер по умолчанию скрыт, показываем только на мобильном */
+.burger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.burger i {
+  width: 22px;
+  height: 3px;
+  background: var(--paper);
+  border-radius: 2px;
+}
+
+/* Сетки: карточки сами перестраиваются под ширину экрана */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 20px;
+}
+.brands {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px;
+}
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+/* Таблицы на узком экране: горизонтальная прокрутка вместо поломки вёрстки */
+.table {
+  display: block;
+  overflow-x: auto;
+  width: 100%;
+  border-collapse: collapse;
+}
+.table th,
+.table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+
+/* Формы: поля во всю ширину, шрифт 16px — iOS не делает зум при фокусе */
+.form input,
+.form select,
+.form textarea,
+.modal input,
+.modal select,
+.modal textarea {
+  width: 100%;
+  font-size: 16px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #15151b;
+  color: var(--paper);
+}
+.form .row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Мобильное меню: выезжающая панель справа, открывается классом .open из main.js */
+.mobmenu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(320px, 85vw);
+  background: var(--ink);
+  border-left: 1px solid var(--line);
+  padding: 80px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transform: translateX(100%);
+  transition: transform 0.25s ease;
+  z-index: 60;
+}
+.mobmenu.open {
+  transform: translateX(0);
+}
+.mobmenu a {
+  padding: 12px 4px;
+  font-weight: 600;
+  color: var(--paper);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+}
+
+/* Модалки на телефоне: не выше экрана, с прокруткой внутри */
+.modal .box {
+  max-height: 90vh;
+  overflow: auto;
+}
+
+/* Телефоны и маленькие планшеты: всё в одну колонку */
+@media (max-width: 768px) {
+  .nav {
+    display: none;
+  } /* меню уходит под бургер */
+  .burger {
+    display: flex;
+  } /* бургер виден */
+  .header {
+    padding: 10px 16px;
+  }
+  .topbar {
+    padding: 0 16px;
+    font-size: 12px;
+  }
+  .hero {
+    padding: 40px 16px;
+  }
+  .hero-cards {
+    flex-direction: column;
+  }
+  .card-side,
+  .card-main {
+    width: 100%;
+    height: auto;
+    margin: 0;
+  }
+  .news-banner {
+    margin-top: 16px;
+  }
+  .cards,
+  .brands,
+  .steps {
+    grid-template-columns: 1fr;
+  }
+  .form .row {
+    flex-direction: column;
+  }
+}
+
+/* Планшеты: две колонки карточек */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Уважение к настройке «уменьшить движение» */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Безопасные отступы для iPhone с «чёлкой» */
+body {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* фирменные цвета макета в одном месте */
+:root {
+  --dark: #0a1128; /* тёмно-синий фон шапки */
+  --red: #e60000; /* красный: кнопки и баннер */
+  --cyan: #00a8ff; /* голубой: слово AUTO в лого */
+  --topbar: #d3d3d3; /* светло-серая полоса сверху */
+}
+
+/* тонкая светлая полоса над шапкой, как в макете */
+.topbar {
+  height: 14px;
+  background: var(--topbar);
+  border: 0;
+}
+
+/* шапка: тёмно-синяя, без рамок */
+.header {
+  background: var(--dark);
+  border: 0;
+  padding: 15px 40px;
+}
+
+/* логотип: жирный, с трекингом, AUTO голубым */
+.logo {
+  font-family: "Montserrat", "Unbounded", sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: 2px;
+  color: #fff;
+  text-decoration: none;
+}
+.logo span {
+  color: var(--cyan);
+}
+
+/* меню-таблетки: активная белая, остальные полупрозрачные */
+.nav {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.nav a,
+.nav .active {
+  font-family: "Montserrat", "Unbounded", sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 8px 18px;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  text-decoration: none;
+  transition:
+    background 0.25s,
+    color 0.25s;
+}
+.nav a:hover {
+  background: rgba(255, 255, 255, 0.45);
+}
+.nav .active {
+  background: #fff;
+  color: var(--dark);
+}
+
+/* ссылки Войти/Выйти в том же стиле таблеток */
+.acts {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.acts a {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.2);
+  transition: background 0.25s;
+}
+.acts a:hover {
+  background: rgba(255, 255, 255, 0.45);
+}
+
+/* красная кнопка-таблетка с тенью при наведении */
+.cta {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: #fff;
+  background: var(--red);
+  border: 0;
+  padding: 12px 26px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+.cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(230, 0, 0, 0.4);
+}
+
+/* бургер скрыт на десктопе, виден только на мобильном */
+.burger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.burger i {
+  width: 22px;
+  height: 3px;
+  background: #fff;
+  border-radius: 2px;
+}
+
+/* герой: светлый чернильный фон Bg3 на весь экран */
+.hero {
+  min-height: 88vh;
+  padding: 60px 20px;
+  background-color: #f2f2f2;
+  background-image: url("../img/textures/Bg3.png");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* три карточки: боковые сзади, центральная крупнее и спереди */
+.hero-cards {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-cards img {
+  object-fit: cover;
+  border-radius: 15px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+  transition: transform 0.4s ease;
+  animation: heroZoom 0.9s ease both;
+}
+.hero-cards img.side {
+  width: 300px;
+  height: 200px;
+  z-index: 1;
+}
+.hero-cards img.main {
+  width: 430px;
+  height: 290px;
+  z-index: 3;
+  margin: 0 -45px;
+  animation-delay: 0.15s;
+}
+/* плавное увеличение при наведении — та самая анимация */
+.hero-cards img:hover {
+  transform: scale(1.05);
+}
+
+/* появление карточек: плавное увеличение из 90% */
+@keyframes heroZoom {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* скошенный красный баннер NEWS 2026 под центральной карточкой */
+.news-banner {
+  margin-top: -34px;
+  z-index: 4;
+  background: var(--red);
+  transform: skewX(-15deg);
+  padding: 12px 46px;
+  text-decoration: none;
+  box-shadow: 0 10px 25px rgba(230, 0, 0, 0.35);
+}
+.news-banner span {
+  display: block;
+  transform: skewX(15deg);
+  font-family: "Montserrat", "Unbounded", sans-serif;
+  font-weight: 800;
+  font-size: 34px;
+  letter-spacing: 3px;
+  color: #fff;
+}
+
+/* скрытый заголовок для SEO, места не занимает */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+/* мобильные: меню под бургер, карточки в одну колонку */
+@media (max-width: 768px) {
+  .nav {
+    display: none;
+  }
+  .burger {
+    display: flex;
+  }
+  .header {
+    padding: 12px 20px;
+  }
+  .hero {
+    padding: 40px 16px;
+  }
+  .hero-cards {
+    flex-direction: column;
+  }
+  .hero-cards img.side,
+  .hero-cards img.main {
+    width: 90vw;
+    height: 56vw;
+    margin: 8px 0;
+  }
+  .news-banner {
+    margin-top: 16px;
+  }
+}
+
+/* уважение к настройке «уменьшить движение» */
+@media (prefers-reduced-motion: reduce) {
+  .hero-cards img {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* ===== ГЛАВНАЯ: hero с чернильным фоном Bg3 ===== */
+.hero {
+  min-height: 88vh;
+  padding: 60px 20px;
+  background-color: #f2f2f2;
+  background-image: url("../img/textures/Bg3.png");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-cards {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-cards img {
+  object-fit: cover;
+  border-radius: 15px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+  transition: transform 0.4s ease;
+  animation: heroZoom 0.9s ease both;
+}
+
+.hero-cards img.side {
+  width: 300px;
+  height: 200px;
+  z-index: 1;
+}
+
+.hero-cards img.main {
+  width: 430px;
+  height: 290px;
+  z-index: 3;
+  margin: 0 -45px;
+  animation-delay: 0.15s;
+}
+
+/* Плавное увеличение при наведении */
+.hero-cards img:hover {
+  transform: scale(1.05);
+}
+
+@keyframes heroZoom {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Скошенный красный баннер NEWS 2026 */
+.news-banner {
+  margin-top: -34px;
+  z-index: 4;
+  background: #e60000;
+  transform: skewX(-15deg);
+  padding: 12px 46px;
+  text-decoration: none;
+  box-shadow: 0 10px 25px rgba(230, 0, 0, 0.35);
+}
+
+.news-banner span {
+  display: block;
+  transform: skewX(15deg);
+  font-family: "Montserrat", "Unbounded", sans-serif;
+  font-weight: 800;
+  font-size: 34px;
+  letter-spacing: 3px;
+  color: #fff;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+/* Секции ниже hero */
+.section {
+  padding: 60px 0;
+}
+.section h2 {
+  font-family: "Unbounded", sans-serif;
+  font-size: 28px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.brands-grid,
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.brand-card,
+.article-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    transform 0.25s,
+    box-shadow 0.25s;
+}
+
+.brand-card:hover,
+.article-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.brand-card img {
+  max-height: 60px;
+  margin-bottom: 8px;
+}
+.article-card img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+/* Мобильные */
+@media (max-width: 768px) {
+  .hero {
+    padding: 40px 16px;
+  }
+  .hero-cards {
+    flex-direction: column;
+  }
+  .hero-cards img.side,
+  .hero-cards img.main {
+    width: 90vw;
+    height: 56vw;
+    margin: 8px 0;
+  }
+  .news-banner {
+    margin-top: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-cards img {
+    animation: none;
+    transition: none;
+  }
+}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Добавить закупку{% endblock %}
+{% block content %}<section class="sec"><div class="wrap narrow">
+  <h1>Новая закупка</h1>
+  <form method="post" class="form">{% csrf_token %}
+    <label>Машина из каталога</label>
+    <select name="car">{% for c in cars %}<option value="{{ c.id }}">{{ c.brand.name }} {{ c.name }}</option>{% endfor %}</select>
+    <label>Заметка</label>
+    <textarea name="note" rows="4" placeholder="Состояние, пробег, документы"></textarea>
+    <button class="btn red">Сохранить</button>
+  </form>
+</div></section>{% endblock %}

@@ -7,7 +7,7 @@ from django.core.management.base import BaseCommand
 
 from blog.models import Article
 from calc.models import Currency, Customs, Fee
-from catalog.models import Brand, Car, Trim
+from catalog.models import Brand, Car, Purchase, Trim
 from orders.models import Option, Order
 
 EXT = (".webp", ".jpg", ".jpeg", ".png")
@@ -108,10 +108,12 @@ class Command(BaseCommand):
             },
         )
 
+        # менеджер: видит все заявки и меняет статусы
         group, _ = Group.objects.get_or_create(name="managers")
         if not User.objects.filter(username="manager").exists():
             m = User.objects.create_user("manager", password="manager12345")
             m.groups.add(group)
+        # клиент: видит только свои заявки
         if not User.objects.filter(username="client").exists():
             u = User.objects.create_user("client", password="client12345")
             car = Car.objects.first()
@@ -122,6 +124,19 @@ class Command(BaseCommand):
                     name="Клиент",
                     phone="+79000000000",
                     total_cny=car.price_cny,
+                )
+        # байер: кабинет закупок, плюс одна демо-закупка для проверки
+        buyers, _ = Group.objects.get_or_create(name="buyers")
+        if not User.objects.filter(username="buyer").exists():
+            b = User.objects.create_user("buyer", password="buyer12345")
+            b.groups.add(buyers)
+            first_car = Car.objects.first()
+            if first_car:
+                Purchase.objects.create(
+                    car=first_car,
+                    buyer=b,
+                    status="found",
+                    note="Демо-закупка для проверки кабинета байера.",
                 )
         self.stdout.write(
             self.style.SUCCESS(
