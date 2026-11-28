@@ -1,0 +1,458 @@
+[
+{
+  "model": "catalog.brand",
+  "pk": 1,
+  "fields": {
+    "name": "AISTALAND",
+    "slug": "aistaland"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 2,
+  "fields": {
+    "name": "Aion",
+    "slug": "aion"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 3,
+  "fields": {
+    "name": "Aito",
+    "slug": "aito"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 4,
+  "fields": {
+    "name": "Avatr",
+    "slug": "avatr"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 5,
+  "fields": {
+    "name": "BYD",
+    "slug": "byd"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 6,
+  "fields": {
+    "name": "Baojun",
+    "slug": "baojun"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 7,
+  "fields": {
+    "name": "Bestune",
+    "slug": "bestune"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 8,
+  "fields": {
+    "name": "Changan",
+    "slug": "changan"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 9,
+  "fields": {
+    "name": "Chery",
+    "slug": "chery"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 10,
+  "fields": {
+    "name": "Deepal",
+    "slug": "deepal"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 11,
+  "fields": {
+    "name": "Denza",
+    "slug": "denza"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 12,
+  "fields": {
+    "name": "Dongfeng",
+    "slug": "dongfeng"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 13,
+  "fields": {
+    "name": "Epicland",
+    "slug": "epicland"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 14,
+  "fields": {
+    "name": "Exeed",
+    "slug": "exeed"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 15,
+  "fields": {
+    "name": "Exlantix",
+    "slug": "exlantix"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 16,
+  "fields": {
+    "name": "Fengon",
+    "slug": "fengon"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 17,
+  "fields": {
+    "name": "Foton",
+    "slug": "foton"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 18,
+  "fields": {
+    "name": "GAC",
+    "slug": "gac"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 19,
+  "fields": {
+    "name": "Geely",
+    "slug": "geely"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 20,
+  "fields": {
+    "name": "Haval",
+    "slug": "haval"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 21,
+  "fields": {
+    "name": "Hongqi",
+    "slug": "hongqi"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 22,
+  "fields": {
+    "name": "Hyptec",
+    "slug": "hyptec"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 23,
+  "fields": {
+    "name": "IM",
+    "slug": "im"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 24,
+  "fields": {
+    "name": "JAC",
+    "slug": "jac"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 25,
+  "fields": {
+    "name": "Jetour",
+    "slug": "jetour"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 26,
+  "fields": {
+    "name": "Kaiyi",
+    "slug": "kaiyi"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 27,
+  "fields": {
+    "name": "Kandi",
+    "slug": "kandi"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 28,
+  "fields": {
+    "name": "Leapmotor",
+    "slug": "leapmotor"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 29,
+  "fields": {
+    "name": "Leopard",
+    "slug": "leopard"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 30,
+  "fields": {
+    "name": "Li Auto",
+    "slug": "li-auto"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 31,
+  "fields": {
+    "name": "Li_Auto",
+    "slug": "li_auto"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 32,
+  "fields": {
+    "name": "Livan",
+    "slug": "livan"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 33,
+  "fields": {
+    "name": "Lotus",
+    "slug": "lotus"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 34,
+  "fields": {
+    "name": "Luxeed",
+    "slug": "luxeed"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 35,
+  "fields": {
+    "name": "Lynk & Co",
+    "slug": "lynk-co"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 36,
+  "fields": {
+    "name": "M-Hero",
+    "slug": "m-hero"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 37,
+  "fields": {
+    "name": "MG",
+    "slug": "mg"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 38,
+  "fields": {
+    "name": "Maextro",
+    "slug": "maextro"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 39,
+  "fields": {
+    "name": "Nevo",
+    "slug": "nevo"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 40,
+  "fields": {
+    "name": "Nio",
+    "slug": "nio"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 41,
+  "fields": {
+    "name": "OMODA",
+    "slug": "omoda"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 42,
+  "fields": {
+    "name": "Onvo",
+    "slug": "onvo"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 43,
+  "fields": {
+    "name": "Ora",
+    "slug": "ora"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 44,
+  "fields": {
+    "name": "Qiyuan",
+    "slug": "qiyuan"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 45,
+  "fields": {
+    "name": "Rox",
+    "slug": "rox"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 46,
+  "fields": {
+    "name": "Skyworth",
+    "slug": "skyworth"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 47,
+  "fields": {
+    "name": "Stelato",
+    "slug": "stelato"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 48,
+  "fields": {
+    "name": "Tank",
+    "slug": "tank"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 49,
+  "fields": {
+    "name": "Voyah",
+    "slug": "voyah"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 50,
+  "fields": {
+    "name": "Wey",
+    "slug": "wey"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 51,
+  "fields": {
+    "name": "Wuling",
+    "slug": "wuling"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 52,
+  "fields": {
+    "name": "Xiaomi",
+    "slug": "xiaomi"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 53,
+  "fields": {
+    "name": "Xpeng",
+    "slug": "xpeng"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 54,
+  "fields": {
+    "name": "Yangwang",
+    "slug": "yangwang"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 55,
+  "fields": {
+    "name": "Yipai",
+    "slug": "yipai"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 56,
+  "fields": {
+    "name": "Zeekr",
+    "slug": "zeekr"
+  }
+},
+{
+  "model": "catalog.brand",
+  "pk": 57,
+  "fields": {
+    "name": "Zongheng",
+    "slug": "zongheng"
+  }
+}
+]

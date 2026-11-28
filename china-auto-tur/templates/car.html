@@ -1,0 +1,28 @@
+{% extends 'base.html' %}{% load static %}
+{% block title %}{{ car.brand.name }} {{ car.name }} купить из Китая цена и комплектации{% endblock %}
+{% block content %}
+<section class="sec"><div class="wrap">
+  <nav class="crumbs"><a href="/">Главная</a> / <a href="/catalog/">Каталог</a> / <a href="/catalog/?brand={{ car.brand_id }}">{{ car.brand.name }}</a> / <span>{{ car.name }}</span></nav>
+  <div class="carlayout">
+    <div>{% if car.photo %}<img class="bigphoto" src="{% static car.photo %}" alt="{{ car.brand.name }} {{ car.name }}">{% else %}<div class="bigphoto noimg">Фото скоро появится</div>{% endif %}</div>
+    <aside class="buy">
+      <span class="brand">{{ car.brand.name }} · {{ car.year }}</span>
+      <h1>{{ car.name }}</h1>
+      <p class="bigprice">{{ car.price_cny|floatformat:0 }} ¥</p>
+      <a class="btn fire wide" href="/order/?car={{ car.slug }}">Заказать</a>
+      <table class="kv">
+        <tr><td>Двигатель</td><td>{{ car.get_engine_display }}</td></tr>
+        <tr><td>Мощность</td><td>{{ car.power }} л.с.</td></tr>
+        <tr><td>Запас хода</td><td>{{ car.range_km }} км</td></tr>
+        <tr><td>Разгон</td><td>{{ car.accel }}</td></tr>
+        <tr><td>Год</td><td>{{ car.year }}</td></tr>
+      </table>
+    </aside>
+  </div>
+  <h2>Обзор {{ car.brand.name }} {{ car.name }}</h2>
+  <p class="muted">{{ car.description|default:"Описание появится позже." }}</p>
+  <h2>Доставка под ключ</h2>
+  <p class="muted">Выкуп, осмотр байером, логистика, таможня и передача ключей за 30+ дней. Цена под ключ фиксируется в договоре.</p>
+  {% if similar %}<h2>Похожие автомобили</h2><div class="cards">{% for car in similar %}{% include 'card.html' %}{% endfor %}</div>{% endif %}
+</div></section>
+{% endblock %}

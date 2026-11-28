@@ -1,7 +1,5 @@
 from django.contrib import admin
+from .models import Currency, Customs, Fee
 
-from .models import CurrencyRate, CustomsRate, Fee
-
-admin.site.register(CurrencyRate)
-admin.site.register(CustomsRate)
-admin.site.register(Fee)
+for m in (Currency, Customs, Fee):
+    admin.site.register(m)

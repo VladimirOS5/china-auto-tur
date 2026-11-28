@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /login/
+Disallow: /cabinet/
+Disallow: /order/
+Disallow: /quick/
+Disallow: /callback/
+Sitemap: {{ base }}/sitemap.xml

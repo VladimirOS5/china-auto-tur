@@ -1,0 +1,11 @@
+{% load static %}
+<a class="card" href="/catalog/{{ car.slug }}/">
+  {% if car.photo %}<img src="{% static car.photo %}" alt="{{ car.brand }} {{ car.name }}" loading="lazy">
+  {% else %}<div class="noimg">Фото скоро появится</div>{% endif %}
+  <div class="body">
+    <span class="brand">{% firstof car.brand car.brand.name %}</span>
+    <h3>{{ car.name }}</h3>
+    <div class="specs"><div><span>Мощность</span><b>{{ car.power }} л.с.</b></div><div><span>Запас</span><b>{{ car.range_km }} км</b></div><div><span>Разгон</span><b>{{ car.accel }}</b></div></div>
+    <div class="foot"><span>{{ car.year }} год</span><b class="price">{{ car.price_cny|floatformat:0 }} ¥</b></div>
+  </div>
+</a>

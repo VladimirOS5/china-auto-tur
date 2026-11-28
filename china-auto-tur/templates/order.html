@@ -1,0 +1,29 @@
+{% extends 'base.html' %}{% load static %}
+{% block title %}Заказ автомобиля из Китая заявка и расчёт под ключ{% endblock %}
+{% block content %}
+<section class="sec"><div class="wrap">
+  <nav class="crumbs"><a href="/">Главная</a> / <a href="/catalog/">Каталог</a> / <span>Заказ</span></nav>
+  <h1>Оформление заказа</h1>
+  <div class="progress"><span class="done">1 Авто</span><span class="active">2 Контакты</span><span>3 Подтверждение</span></div>
+  <form method="post" class="carlayout">{% csrf_token %}
+    <aside class="buy">
+      <div class="mini">{% if car.photo %}<img src="{% static car.photo %}" alt="{{ car.name }}">{% endif %}<div><h3>{{ car.brand.name }} {{ car.name }}</h3><b>{{ car.price_cny|floatformat:0 }} ¥</b></div></div>
+      <label>Комплектация</label>
+      <select name="trim" id="trim" data-base="{{ car.price_cny }}"><option value="0" data-extra="0">Базовая</option>{% for t in trims %}<option value="{{ t.id }}" data-extra="{{ t.extra_cny }}">{{ t.name }} +{{ t.extra_cny|floatformat:0 }} ¥</option>{% endfor %}</select>
+      <label>Опции</label>
+      {% for o in options %}<label class="chk"><input type="checkbox" name="options" value="{{ o.id }}" data-price="{{ o.price_cny }}"><span>{{ o.name }} +{{ o.price_cny|floatformat:0 }} ¥</span></label>{% endfor %}
+      <div class="total"><span>Итого</span><b id="total">{{ car.price_cny|floatformat:0 }} ¥</b></div>
+    </aside>
+    <div class="form">
+      <label>Имя</label><input name="name" value="{{ form.name }}">{% if errors.name %}<p class="err">{{ errors.name }}</p>{% endif %}
+      <label>Телефон</label><input name="phone" value="{{ form.phone }}" placeholder="+7 ___ ___ __ __">{% if errors.phone %}<p class="err">{{ errors.phone }}</p>{% endif %}
+      <label>Email</label><input name="email" type="email" value="{{ form.email }}">
+      <label>Город</label><input name="city" value="{{ form.city }}">
+      <label>Комментарий</label><textarea name="comment" rows="4">{{ form.comment }}</textarea>
+      <label class="chk"><input type="checkbox" name="consent"><span>Согласен на обработку данных, <a href="/policy/">политика</a></span></label>
+      {% if errors.consent %}<p class="err">{{ errors.consent }}</p>{% endif %}
+      <button class="btn wide">Отправить заявку</button>
+    </div>
+  </form>
+</div></section>
+{% endblock %}

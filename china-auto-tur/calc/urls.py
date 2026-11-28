@@ -1,10 +1,7 @@
 from django.urls import path
-
 from . import views
 
-app_name = "calc"
-
 urlpatterns = [
-    path("", views.calculator, name="calculator"),
-    path("api/", views.calculator_api, name="api"),
+    path("calc/", views.calculator, name="calc"),
+    path("calc/api/", views.calc_api, name="calc_api"),
 ]
