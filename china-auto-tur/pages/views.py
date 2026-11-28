@@ -9,11 +9,16 @@ from .models import Message
 
 
 def home(request):
-    return render(request, "home.html", {
-        "brands": Brand.objects.all()[:8],
-        "cars": Car.objects.all()[:3],
-        "articles": Article.objects.all()[:3],
-        "sent": request.GET.get("sent") == "1"})
+    return render(
+        request,
+        "home.html",
+        {
+            "brands": Brand.objects.all()[:8],
+            "cars": Car.objects.all()[:3],
+            "articles": Article.objects.all()[:3],
+            "sent": request.GET.get("sent") == "1",
+        },
+    )
 
 
 @require_POST
@@ -40,11 +45,18 @@ def contacts(request):
         if not form.get("consent"):
             errors["consent"] = "Нужно согласие"
         if not errors:
-            Message.objects.create(kind="feedback", name=form["name"],
-                                   phone=form["phone"], text=form.get("text", ""))
+            Message.objects.create(
+                kind="feedback",
+                name=form["name"],
+                phone=form["phone"],
+                text=form.get("text", ""),
+            )
             return redirect(reverse("contacts") + "?sent=1")
-    return render(request, "contacts.html", {
-        "errors": errors, "form": form, "sent": request.GET.get("sent") == "1"})
+    return render(
+        request,
+        "contacts.html",
+        {"errors": errors, "form": form, "sent": request.GET.get("sent") == "1"},
+    )
 
 
 def policy(request):
@@ -62,6 +74,14 @@ def robots(request):
 
 def sitemap(request):
     base = f"{request.scheme}://{request.get_host()}"
-    return render(request, "sitemap.xml", {
-        "base": base, "cars": Car.objects.all(), "articles": Article.objects.all()},
-        content_type="application/xml")
+    return render(
+        request,
+        "sitemap.xml",
+        {"base": base, "cars": Car.objects.all(), "articles": Article.objects.all()},
+        content_type="application/xml",
+    )
+
+
+def handler404(request, exception=None):
+    # своя страница 404 вместо стандартной заглушки Django
+    return render(request, "404.html", status=404)

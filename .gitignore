@@ -3,3 +3,5 @@ __pycache__/
 media/
 Thumbs.db
 venv/
+
+.venv/
